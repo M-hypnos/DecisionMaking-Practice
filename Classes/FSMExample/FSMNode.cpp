@@ -27,25 +27,25 @@ bool FSMNode::init()
         return aiNode->notFoundEnemy();
     };
     auto condiFoundPursuit = [](AINode* aiNode, float timer) -> bool {
-        return aiNode->findEnemy();
+        return aiNode->inPursuitRange();
     };
     auto condiFoundEnemy = [](AINode* aiNode, float timer) -> bool {
-        return aiNode->findEnemy() || aiNode->inAttackRange();
+        return aiNode->inPursuitRange() || aiNode->inAttackRange();
     };
-    auto condiHpUnEnough = [](AINode* aiNode, float timer) -> bool {
-        return aiNode->getHP() < 80;
+    auto condiHpNotFull = [](AINode* aiNode, float timer) -> bool {
+        return aiNode->getHP() < 100;
     };
-    auto condiHpEnough = [](AINode* aiNode, float timer) -> bool {
-        return aiNode->getHP() >= 80;
+    auto condiHpFull = [](AINode* aiNode, float timer) -> bool {
+        return aiNode->getHP() >= 100;
     };
     auto condiEnemyInAttackRange = [](AINode* aiNode, float timer) -> bool {
         return aiNode->inAttackRange();
     };
-    auto condiNotInAttacking = [](AINode* aiNode, float timer) -> bool {
-        return !aiNode->isInAttack();
-    };
-    auto condiNearDeath = [](AINode* aiNode, float timer) -> bool {
+    auto condiHpUnEnough = [](AINode* aiNode, float timer) -> bool {
         return aiNode->getHP() < 20;
+    };
+    auto condiHpEnough = [](AINode* aiNode, float timer) -> bool {
+        return aiNode->getHP() >= 20;
     };
     auto condiDead = [](AINode* aiNode, float timer) -> bool {
         return aiNode->isDead();
@@ -55,7 +55,7 @@ bool FSMNode::init()
     _fsm->addState(wanderState);
     auto wanderToIdle = wanderState->addTransition(FSMNodeStateID::Idle);
     wanderToIdle->addConditions(condiNotFoundEnemy);
-    wanderToIdle->addConditions(condiHpUnEnough);
+    wanderToIdle->addConditions(condiHpNotFull);
     auto wanderToPursuit = wanderState->addTransition(FSMNodeStateID::Pursuit);
     wanderToPursuit->addConditions(condiFoundPursuit);
     wanderToPursuit->addConditions(condiHpEnough);
@@ -68,7 +68,7 @@ bool FSMNode::init()
     BaseState* idleState = new IdleState(FSMNodeStateID::Idle, this);
     _fsm->addState(idleState);
     auto idleToWander = idleState->addTransition(FSMNodeStateID::Wander);
-    idleToWander->addConditions(condiHpEnough);
+    idleToWander->addConditions(condiHpFull);
     idleToWander->addConditions(condiNotFoundEnemy);
     auto idleToPursuit = idleState->addTransition(FSMNodeStateID::Pursuit);
     idleToPursuit->addConditions(condiHpEnough);
@@ -93,16 +93,16 @@ bool FSMNode::init()
 
     BaseState* attackState = new AttackState(FSMNodeStateID::Attack, this);
     _fsm->addState(attackState);
+    auto attackToIdle = attackState->addTransition(FSMNodeStateID::Idle);
+    attackToIdle->addConditions(condiHpNotFull);
+    attackToIdle->addConditions(condiNotFoundEnemy);
+    auto attackToEvading = attackState->addTransition(FSMNodeStateID::Evading);
+    attackToEvading->addConditions(condiHpUnEnough);
+    attackToEvading->addConditions(condiFoundEnemy);
     auto attackToPursuit = attackState->addTransition(FSMNodeStateID::Pursuit);
     attackToPursuit->addConditions(condiFoundPursuit);
     auto attackToWander = attackState->addTransition(FSMNodeStateID::Wander);
     attackToWander->addConditions(condiNotFoundEnemy);
-    auto attackToEvading = attackState->addTransition(FSMNodeStateID::Evading);
-    attackToEvading->addConditions(condiNearDeath);
-    attackToEvading->addConditions(condiFoundEnemy);
-    auto attackToIdle = attackState->addTransition(FSMNodeStateID::Idle);
-    attackToIdle->addConditions(condiNearDeath);
-    attackToIdle->addConditions(condiNotFoundEnemy);
     auto attackToDead = attackState->addTransition(FSMNodeStateID::Dead);
     attackToDead->addConditions(condiDead);
 
@@ -117,11 +117,11 @@ bool FSMNode::init()
     _fsm->addState(deadState);
     
 
-    _fsm->changeState(FSMNodeStateID::Wander);
+    _fsm->invokeFSM(FSMNodeStateID::Wander);
     return true;
 }
 
 void FSMNode::update(float dt) {
     AINode::update(dt);
-    _fsm->onUpdate(dt);
+    _fsm->onAction(dt);
 }

@@ -25,7 +25,7 @@ bool AIScene::init()
 
     auto layer = LayerColor::create(Color4B(255, 255, 255, 255));
     layer:setContentSize(visibleSize);
-    this->addChild(layer);
+    this->addChild(layer, -1);
 
     _mapDrawNode = DrawNode::create();
     this->addChild(_mapDrawNode);
@@ -123,8 +123,9 @@ bool AIScene::onTouchBegan(Touch* touch, Event* event)
 {
     _touchBeganPosition = touch->getLocation();
     createFSMNode();
+    createHFSMNode();
 
-    auto node = FSMNode::create();
+    /*auto node = FSMNode::create();
     auto body = DrawNode::create();
     node->_renderNode->addChild(body, -1);
     body->drawDot(Vec2(0, 0), node->getRidius(), Color4F(0, 1, 0, 0.5));
@@ -137,7 +138,7 @@ bool AIScene::onTouchBegan(Touch* touch, Event* event)
     m_sim->setAgentType(idx, 1);
     m_sim->setAgentAINode(idx, node);
 
-    _aiNodeIdx++;
+    _aiNodeIdx++;*/
 
     return true;
 }
@@ -171,15 +172,38 @@ void AIScene::update(float dt) {
 }
 
 void AIScene::createFSMNode() {
+    float x = RandomHelper::random_real<float>(0, 200);
+    float y = RandomHelper::random_real<float>(0, 200);
+    Vec2 v(x, y);
+
     auto node = _aiNodeManager->getFSMNode();
-    node->setPosition(_touchBeganPosition);
+    node->setPosition(v);
     node->setId(_aiNodeIdx);
     this->addChild(node);
     _aiNodes.push_back(node);
 
-    int idx = m_sim->addAgent(Vector2(_touchBeganPosition.x, _touchBeganPosition.y));
+    int idx = m_sim->addAgent(Vector2(v.x, v.y));
     m_sim->setAgentAINode(idx, node);
     m_sim->setAgentType(idx, int(AINodeType::FSMNode));
+
+    _aiNodeIdx++;
+}
+
+void AIScene::createHFSMNode() {
+    float x = RandomHelper::random_real<float>(600, 800);
+    float y = RandomHelper::random_real<float>(440, 640);
+    /*float x = RandomHelper::random_real<float>(0, 200);
+    float y = RandomHelper::random_real<float>(0, 200);*/
+    Vec2 v(x, y);
+    auto node = _aiNodeManager->getHFSMNode();
+    node->setPosition(v);
+    node->setId(_aiNodeIdx);
+    this->addChild(node);
+    _aiNodes.push_back(node);
+
+    int idx = m_sim->addAgent(Vector2(v.x, v.y));
+    m_sim->setAgentAINode(idx, node);
+    m_sim->setAgentType(idx, int(AINodeType::HFSMNode));
 
     _aiNodeIdx++;
 }

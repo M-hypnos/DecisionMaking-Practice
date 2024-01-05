@@ -18,9 +18,10 @@ public:
 	void onUpdate(float dt);
 
 	Transition* addTransition(int toStateId);
-	int checkChangeState();
+	int checkChangeState(float dt);
 
 	int getStateId() const { return _id; }
+	void setCheckInterval(float checkInterval) { _checkIntervel = checkInterval; }
 
 	bool operator ==(const BaseState& rhs) { return this->getStateId() == rhs.getStateId();  }
 	bool operator !=(const BaseState& rhs) { return this->getStateId() != rhs.getStateId();  }
@@ -28,6 +29,9 @@ protected:
 	int _id;
 	bool _isActived;
 	float _timer;
+	float _checkTimer;
+	float _checkIntervel;
+	bool _sortTans;
 	AINode* _aiNode;
 	vector<Transition*> _trans;
 private:

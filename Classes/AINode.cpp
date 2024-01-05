@@ -129,7 +129,7 @@ bool AINode::notFoundEnemy() {
     return dist > _pursuitRidius;
 }
 
-bool AINode::findEnemy() {
+bool AINode::inPursuitRange() {
     if (_nearestEnemy == nullptr) return false;
     float dist = this->getPosition().getDistance(_nearestEnemy->getPosition());
     return dist > _attackRidius && dist <= _pursuitRidius;
@@ -195,4 +195,12 @@ void AINode::stopORCA() {
 
 void AINode::resumeORCA() {
     _weight = 0.5;
+}
+
+void AINode::setDead() {
+    this->setLocalZOrder(-1);
+    _label->setVisible(false);
+    _direct->setPosition(Vec2::ZERO);
+    _renderNode->setCascadeOpacityEnabled(true);
+    _renderNode->setOpacity(100);
 }

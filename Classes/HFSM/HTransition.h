@@ -1,19 +1,21 @@
-#ifndef __TRANSITION_H__
-#define __TRANSITION_H__
+#ifndef __HTRANSITION_H__
+#define __HTRANSITION_H__
 
 #include "AINode.h"
 #include "AIEnum.h"
 
-class Transition
+class HTransition
 {
 public:
-	Transition(int toStateId):_toStateId(toStateId), _transitionType(TransitionType::AND),_trueNum(1), _weight(0){}
+	HTransition(int fromStateId, int toStateId): _fromStateId(fromStateId), _toStateId(toStateId), _transitionType(HTransitionType::HAND),_trueNum(1), _weight(0) {}
+	int getFromStateId() { return _fromStateId; }
 	int getToStateId() { return _toStateId; }
 	void addConditions(function<bool(AINode*, float timer)> condition);
 	void setType(int type) { _transitionType = type; }
 	bool checkChangeState(AINode* aiNode, float timer);
 	int getWeight() const { return _weight; }
 private:
+	int _fromStateId;
 	int _toStateId;
 	int _trueNum;
 	int _transitionType;

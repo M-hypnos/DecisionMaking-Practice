@@ -9,9 +9,11 @@ class FSM
 {
 public:
 	FSM();
-	void onUpdate(float dt);
+	void onAction(float dt);
 	void changeState(int stateId);
 	void addState(BaseState* state);
+	void invokeFSM();
+	void invokeFSM(int stateId);
 	BaseState* removeState(int stateId);
 	unordered_map<int, BaseState*> getAllStates() { return _allStates; }
 	~FSM();

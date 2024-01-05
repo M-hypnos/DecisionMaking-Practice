@@ -33,7 +33,7 @@ CC_CONSTRUCTOR_ACCESS:
 	void updatePos(Vec2 velocity);
 	void setNearestEnemy(AINode* nearestEnemy) { _nearestEnemy = nearestEnemy; }
 
-	bool findEnemy();
+	bool inPursuitRange();
 	bool notFoundEnemy();
 	bool inAttackRange();
 
@@ -61,6 +61,7 @@ CC_CONSTRUCTOR_ACCESS:
 
 	float getWeight() { return _weight; }
 
+	void setDead();
 protected:
 	DrawNode* _direct;
 	int _id;

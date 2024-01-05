@@ -4,6 +4,7 @@ void DeadState::onEnterAction() {
 	CCLOG("DeadState::onEnterAction  ");
 	_aiNode->setVelocity(Vec2::ZERO);
 	_aiNode->stopORCA();
+	_aiNode->setDead();
 }
 
 void DeadState::onExitAction() {

@@ -11,21 +11,32 @@ FSM::~FSM() {
 	_allStates.clear();
 }
 
-void FSM::onUpdate(float dt) {
+void FSM::onAction(float dt) {
 	if (_curState == nullptr) return;
-	_curState->onUpdate(dt);
-
-	int newStateId = _curState->checkChangeState();
+	int newStateId = _curState->checkChangeState(dt);
 	if (newStateId >= 0) changeState(newStateId);
+
+	_curState->onUpdate(dt);
+}
+
+void FSM::invokeFSM() {
+	if (_allStates.empty()) return;
+	if (_curState != nullptr) return;
+	_curState = (*_allStates.begin()).second;
+	_curState->onEnter();
+}
+
+void FSM::invokeFSM(int stateId) {
+	if (_allStates.empty()) return;
+	if (_curState != nullptr) return;
+	if (_allStates.find(stateId) == _allStates.end()) return;
+	_curState = _allStates[stateId];
+	_curState->onEnter();
 }
 
 void FSM::changeState(int stateId) {
 	if (_allStates.find(stateId) == _allStates.end()) return;
-	if (_curState == nullptr) {
-		_curState = _allStates[stateId];
-		_curState->onEnter();
-	}
-	else if(*_curState != *_allStates[stateId]){
+	if(*_curState != *_allStates[stateId]){
 		_curState->onExit();
 		_lastState = _curState;
 		_curState = _allStates[stateId];
@@ -36,7 +47,7 @@ void FSM::changeState(int stateId) {
 void FSM::addState(BaseState* state) {
 	int stateId = state->getStateId();
 	if (_allStates.find(stateId) != _allStates.end()) {
-		printf("add same state %d", stateId);
+		CCLOG("add same state %d", stateId);
 		return;
 	}
 	_allStates.emplace(stateId, state);
@@ -44,7 +55,7 @@ void FSM::addState(BaseState* state) {
 
 BaseState* FSM::removeState(int stateId) {
 	if (_allStates.find(stateId) == _allStates.end()) {
-		printf("remove unexited state %d", stateId);
+		CCLOG("remove unexited state %d", stateId);
 		return nullptr;
 	}
 	BaseState* temp = _allStates[stateId];

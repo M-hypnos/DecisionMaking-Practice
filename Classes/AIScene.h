@@ -23,6 +23,7 @@ public:
     void update(float dt);
 
     void createFSMNode();
+    void createHFSMNode();
 
     RVOSimulator* getRVOSim() { return m_sim; }
 

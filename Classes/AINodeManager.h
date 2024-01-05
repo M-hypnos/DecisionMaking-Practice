@@ -3,18 +3,21 @@
 
 #include "cocos2d.h"
 #include "FSMExample/FSMNode.h"
+#include "HFSMExample/HFSMNode.h"
 
 USING_NS_CC;
 using namespace std;
 
 enum class AINodeType {
-	FSMNode
+	FSMNode,
+	HFSMNode,
 };
 
 class AINodeManager
 {
 public:
 	AINode* getFSMNode();
+	AINode* getHFSMNode();
 
 protected:
 	

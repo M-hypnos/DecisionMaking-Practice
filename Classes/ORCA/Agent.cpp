@@ -394,7 +394,7 @@ namespace RVO {
 
 	void Agent::insertAgentNeighbor(const Agent *agent, float &rangeSq)
 	{
-		if (this != agent && !agent->aiNode_->isDead()) {
+		if (this != agent && !agent->aiNode_->isDead() && this->type_ == agent->type_) {
 			const float distSq = absSq(position_ - agent->position_);
 
 			if (distSq < rangeSq) {
