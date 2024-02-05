@@ -30,76 +30,30 @@ BTResult BTParallelNode::onUpdateAction(float dt, AINode* aiNode) {
 	vector<BTNode*> waitNode;
 	int failNum = _childNodes.size() - _successTarNum;
 
+	vector<BTNode*> executeNode;
+	bool needInterrupt = false;
 	if (_waitNodes.empty()) {
-		for (auto node : _childNodes) {
-			if (node->evaluate(aiNode)) {
-				node->onEnter(aiNode);
-				switch (node->onUpdate(dt, aiNode))
-				{
-				case BTResult::SUCCESS: 
-					_successCurNum++;
-					if (_successCurNum >= _successTarNum) {
-						for (auto node : waitNode) {
-							node->onInterrupt(aiNode);
-						}
-						return BTResult::SUCCESS;
-					}
-					break;
-				case BTResult::FAIL:
-					_failCurNum++;
-					if (_failCurNum > failNum) {
-						for (auto node : waitNode) {
-							node->onInterrupt(aiNode);
-						}
-						return BTResult::FAIL;
-					}
-					break;
-				case BTResult::RUNNING:
-					waitNode.push_back(node);
-					break;
-				}
-			}
-			else {
-				_failCurNum++;
-				if (_failCurNum > failNum) {
-					for (auto node : waitNode) {
-						node->onInterrupt(aiNode);
-					}
-					return BTResult::FAIL;
-				}
-			}
-		}
+		executeNode = _childNodes;
 	}
 	else {
-		for (auto node : _waitNodes) {
-			if (node->evaluate(aiNode)) {
-				switch (node->onUpdate(dt, aiNode))
-				{
-				case BTResult::SUCCESS:
-					_successCurNum++;
-					if (_successCurNum >= _successTarNum) {
-						for (auto node : waitNode) {
-							node->onInterrupt(aiNode);
-						}
-						return BTResult::SUCCESS;
+		executeNode = _waitNodes;
+		needInterrupt = true;
+	}
+
+	for (auto node : executeNode) {
+		if (node->evaluate(aiNode)) {
+			switch (node->onUpdate(dt, aiNode))
+			{
+			case BTResult::SUCCESS:
+				_successCurNum++;
+				if (_successCurNum >= _successTarNum) {
+					for (auto node : waitNode) {
+						node->onInterrupt(aiNode);
 					}
-					break;
-				case BTResult::FAIL:
-					_failCurNum++;
-					if (_failCurNum > failNum) {
-						for (auto node : waitNode) {
-							node->onInterrupt(aiNode);
-						}
-						return BTResult::FAIL;
-					}
-					break;
-				case BTResult::RUNNING:
-					waitNode.push_back(node);
-					break;
+					return BTResult::SUCCESS;
 				}
-			}
-			else {
-				node->onInterrupt(aiNode);
+				break;
+			case BTResult::FAIL:
 				_failCurNum++;
 				if (_failCurNum > failNum) {
 					for (auto node : waitNode) {
@@ -107,6 +61,22 @@ BTResult BTParallelNode::onUpdateAction(float dt, AINode* aiNode) {
 					}
 					return BTResult::FAIL;
 				}
+				break;
+			case BTResult::RUNNING:
+				waitNode.push_back(node);
+				break;
+			}
+		}
+		else {
+			if (needInterrupt) {
+				node->onInterrupt(aiNode);
+			}
+			_failCurNum++;
+			if (_failCurNum > failNum) {
+				for (auto node : waitNode) {
+					node->onInterrupt(aiNode);
+				}
+				return BTResult::FAIL;
 			}
 		}
 	}

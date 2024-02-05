@@ -16,7 +16,6 @@ protected:
 private:
 	float _limitTime;
 	float _curTime;
-	virtual void onEnterAction(AINode* aiNode) override;
 	virtual BTResult onUpdateAction(float dt, AINode* aiNode) override;
 	virtual void onExitAction(AINode* aiNode, BTResult result) override;
 };

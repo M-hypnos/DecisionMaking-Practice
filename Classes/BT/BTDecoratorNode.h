@@ -16,6 +16,8 @@ public:
 protected:
 	BTNode* _childNode;
 private:
+	virtual void onEnterAction(AINode* aiNode) override {}
+	virtual void onExitAction(AINode* aiNode, BTResult result) override {}
 };
 
 #endif

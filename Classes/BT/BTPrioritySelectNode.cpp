@@ -34,7 +34,6 @@ BTResult BTPrioritySelectNode::onUpdateAction(float dt, AINode* aiNode) {
 		}
 		else {
 			if (_childNodes[i]->evaluate(aiNode)) {
-				_childNodes[i]->onEnter(aiNode);
 				result = _childNodes[i]->onUpdate(dt, aiNode);
 				if (result != BTResult::FAIL) {
 					if (i < _executeIdx) {

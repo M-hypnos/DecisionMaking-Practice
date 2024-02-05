@@ -1,9 +1,5 @@
 #include "BTTimeLimitNode.h"
 
-void BTTimeLimitNode::onEnterAction(AINode* aiNode) {
-	_childNode->onEnter(aiNode);
-}
-
 void BTTimeLimitNode::onExitAction(AINode* aiNode, BTResult result) {
 	_curTime = 0;
 }

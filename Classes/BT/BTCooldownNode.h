@@ -16,7 +16,6 @@ protected:
 private:
 	float _cooldownTime;
 	long long _lastActTime;
-	virtual void onEnterAction(AINode* aiNode) override;
 	virtual BTResult onUpdateAction(float dt, AINode* aiNode) override;
 	virtual void onExitAction(AINode* aiNode, BTResult result) override;
 };

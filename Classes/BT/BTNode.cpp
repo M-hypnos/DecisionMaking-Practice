@@ -35,9 +35,8 @@ void BTNode::onEnter(AINode* aiNode) {
 }
 
 BTResult BTNode::onUpdate(float dt, AINode* aiNode) {
-	CCASSERT(_isRunning, "running node cannot update");
 	if (!_isRunning) {
-		return BTResult::FAIL;
+		onEnter(aiNode);
 	}
 	auto result = onUpdateAction(dt, aiNode);
 	if (result != BTResult::RUNNING) {

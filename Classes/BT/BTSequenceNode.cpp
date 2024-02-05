@@ -35,7 +35,6 @@ BTResult BTSequenceNode::onUpdateAction(float dt, AINode* aiNode) {
 	for (int i = _executeIdx + 1; i < _childNodes.size(); i++) {
 		if (_childNodes[i]->evaluate(aiNode)) {
 			_executeIdx = i;
-			_childNodes[_executeIdx]->onEnter(aiNode);
 			result = _childNodes[_executeIdx]->onUpdate(dt, aiNode);
 			if (result != BTResult::SUCCESS) {
 				return result;

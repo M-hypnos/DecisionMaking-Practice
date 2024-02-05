@@ -9,10 +9,6 @@ bool BTCooldownNode::evaluate(AINode* aiNode) {
 	return _childNode->evaluate(aiNode);
 }
 
-void BTCooldownNode::onEnterAction(AINode* aiNode) {
-	_childNode->onEnter(aiNode);
-}
-
 void BTCooldownNode::onExitAction(AINode* aiNode, BTResult result) {
 	auto cur = std::chrono::system_clock::now();
 	_lastActTime = std::chrono::time_point_cast<std::chrono::milliseconds>(cur).time_since_epoch().count();

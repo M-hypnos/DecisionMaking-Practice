@@ -30,19 +30,15 @@ void BTTree::onUpdate(float dt, AINode* aiNode) {
 		}
 		return; 
 	}
-	if (_root->isRunning()) {
-		auto result = _root->onUpdate(dt, aiNode);
-		if (_onlyOnce && result != BTResult::RUNNING) {
-			_isActived = false;
-			if (result == BTResult::SUCCESS) {
-				CCLOG("BTTree:onUpdate success£¡");
-			}
-			else {
-				CCLOG("BTTree:onUpdate fail£¡");
-			}
+	
+	auto result = _root->onUpdate(dt, aiNode);
+	if (_onlyOnce && result != BTResult::RUNNING) {
+		_isActived = false;
+		if (result == BTResult::SUCCESS) {
+			CCLOG("BTTree:onUpdate success£¡");
 		}
-	}
-	else {
-		_root->onEnter(aiNode);
+		else {
+			CCLOG("BTTree:onUpdate fail£¡");
+		}
 	}
 }
