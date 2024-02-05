@@ -168,7 +168,7 @@ namespace RVO {
 #pragma omp parallel for
 #endif
 		for (int i = 0; i < static_cast<int>(agents_.size()); ++i) {
-			if (agents_[i]->aiNode_->isDead()) continue;
+			if (agents_[i]->aiNode_->isStopORCA()) continue;
 			agents_[i]->computeNeighbors();
 			agents_[i]->computeNewVelocity();
 		}
@@ -177,7 +177,7 @@ namespace RVO {
 #pragma omp parallel for
 #endif
 		for (int i = 0; i < static_cast<int>(agents_.size()); ++i) {
-			if (agents_[i]->aiNode_->isDead()) continue;
+			if (agents_[i]->aiNode_->isStopORCA()) continue;
 			agents_[i]->update();
 		}
 

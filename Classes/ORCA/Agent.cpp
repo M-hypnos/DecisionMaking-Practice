@@ -63,7 +63,7 @@ namespace RVO {
 
 	void Agent::checkNearestEnemy(const Agent* agent, float& rangeSq)
 	{
-		if (agent->aiNode_->isDead()) return;
+		if (agent->aiNode_->isStopORCA()) return;
 		if (this != agent && this->type_ != agent->type_) {
 			const float distSq = absSq(position_ - agent->position_);
 
@@ -394,7 +394,7 @@ namespace RVO {
 
 	void Agent::insertAgentNeighbor(const Agent *agent, float &rangeSq)
 	{
-		if (this != agent && !agent->aiNode_->isDead() && this->type_ == agent->type_) {
+		if (this != agent && !agent->aiNode_->isStopORCA() && this->type_ == agent->type_) {
 			const float distSq = absSq(position_ - agent->position_);
 
 			if (distSq < rangeSq) {
