@@ -1,18 +1,18 @@
 #include "DeadHState.h"
 
-void DeadHState::onEnterAction() {
+void DeadHState::onEnterAction(AINode* aiNode) {
 	CCLOG("DeadHState::onEnterAction  ");
-	_aiNode->setVelocity(Vec2::ZERO);
-	_aiNode->stopORCA();
-	_aiNode->setDead();
+	static_cast<AIAttackNode*>(aiNode)->setVelocity(Vec2::ZERO);
+	static_cast<AIAttackNode*>(aiNode)->stopORCA();
+	static_cast<AIAttackNode*>(aiNode)->setDead();
 }
 
-void DeadHState::onExitAction() {
+void DeadHState::onExitAction(AINode* aiNode) {
 	CCLOG("DeadHState::onExitAction  ");
-	_aiNode->resumeORCA();
+	static_cast<AIAttackNode*>(aiNode)->resumeORCA();
 }
 
-void DeadHState::onUpdateAction(float dt) {
+void DeadHState::onUpdateAction(float dt, AINode* aiNode) {
 	CCLOG("DeadHState::onUpdateAction  ");
-	_aiNode->setVelocity(Vec2::ZERO);
+	static_cast<AIAttackNode*>(aiNode)->setVelocity(Vec2::ZERO);
 }

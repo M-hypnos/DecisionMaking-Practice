@@ -1,15 +1,15 @@
 #include "PursuitHState.h"
 
-void PursuitHState::onEnterAction() {
+void PursuitHState::onEnterAction(AINode* aiNode) {
 	CCLOG("PursuitHState::onEnterAction  ");
 }
 
-void PursuitHState::onExitAction() {
+void PursuitHState::onExitAction(AINode* aiNode) {
 	CCLOG("PursuitHState::onExitAction  ");
 }
 
-void PursuitHState::onUpdateAction(float dt) {
+void PursuitHState::onUpdateAction(float dt, AINode* aiNode) {
 	CCLOG("PursuitHState::onUpdateAction  ");
-	_aiNode->setRestInterval(_aiNode->getRestInterval() - dt);
-	_aiNode->pursuit(dt);
+	static_cast<AIAttackNode*>(aiNode)->setRestInterval(static_cast<AIAttackNode*>(aiNode)->getRestInterval() - dt);
+	static_cast<AIAttackNode*>(aiNode)->pursuit(dt);
 }

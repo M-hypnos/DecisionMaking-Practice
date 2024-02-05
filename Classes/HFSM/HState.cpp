@@ -1,10 +1,9 @@
 #include "HState.h"
 
-HState::HState(int id, AINode* aiNode)
+HState::HState(int id)
 : _id(id)
 , _isActived(false)
 , _timer(0)
-, _aiNode(aiNode)
 , _parentMachine(nullptr)
 {};
 
@@ -12,24 +11,24 @@ HState::~HState(){
 
 }
 
-void HState::onEnter() {
+void HState::onEnter(AINode* aiNode) {
 	if (_isActived) return;
 	_timer = 0;
 	_isActived = true;
-	onEnterAction();
+	onEnterAction(aiNode);
 }
 
-void HState::onExit() {
+void HState::onExit(AINode* aiNode) {
 	if (!_isActived) return;
 	_timer = 0;
 	_isActived = false;
-	onExitAction();
+	onExitAction(aiNode);
 }
 
-void HState::onUpdate(float dt) {
+void HState::onUpdate(float dt, AINode* aiNode) {
 	if (!_isActived) return;
 	_timer += dt;
-	onUpdateAction(dt);
+	onUpdateAction(dt, aiNode);
 }
 
 void HState::setParentMachine(HState* parentMachine) {

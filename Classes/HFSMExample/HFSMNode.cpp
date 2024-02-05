@@ -20,32 +20,32 @@ HFSMNode::~HFSMNode() {
 
 bool HFSMNode::init()
 {
-    AINode::init();
-    _hfsm = new HFSM(HFSMNodeStateID::ROOT, this);
+    AIAttackNode::init();
+    _hfsm = new HFSM(HFSMNodeStateID::ROOT);
     
     // root FSM (alive FSM, dead State)
-    HFSM* aliveHfsm = new HFSM(HFSMNodeStateID::ALIVE_FSM, this);
+    HFSM* aliveHfsm = new HFSM(HFSMNodeStateID::ALIVE_FSM);
     _hfsm->addState(aliveHfsm);
-    HState* deadHState = new DeadHState(HFSMNodeStateID::DEAD_STATE, this);
+    HState* deadHState = new DeadHState(HFSMNodeStateID::DEAD_STATE);
     _hfsm->addState(deadHState);
     _hfsm->setDeafultStateId(HFSMNodeStateID::ALIVE_FSM);
     auto condiDead = [](AINode* aiNode, float timer) -> bool {
-        return aiNode->isDead();
+        return static_cast<AIAttackNode*>(aiNode)->isDead();
     };
     auto aliveToDead = _hfsm->addTransition(HFSMNodeStateID::ALIVE_FSM, HFSMNodeStateID::DEAD_STATE);
     aliveToDead->addConditions(condiDead);
 
     // alive FSM (findEnemy FSM, notFindEnemy FSM)
     auto condiNotFoundEnemy = [](AINode* aiNode, float timer) -> bool {
-        return aiNode->notFoundEnemy();
+        return static_cast<AIAttackNode*>(aiNode)->notFoundEnemy();
     };
     auto condiFoundEnemy = [](AINode* aiNode, float timer) -> bool {
-        return aiNode->inPursuitRange() || aiNode->inAttackRange();
+        return static_cast<AIAttackNode*>(aiNode)->inPursuitRange() || static_cast<AIAttackNode*>(aiNode)->inAttackRange();
     };
-    HFSM* findEnemyHfsm = new HFSM(HFSMNodeStateID::FIND_ENEMY_FSM, this);
+    HFSM* findEnemyHfsm = new HFSM(HFSMNodeStateID::FIND_ENEMY_FSM);
     auto enterFindEnemy = aliveHfsm->addState(findEnemyHfsm, true);
     enterFindEnemy->addConditions(condiFoundEnemy);
-    HFSM* notFindEnemyHfsm = new HFSM(HFSMNodeStateID::NOT_FIND_ENEMY_FSM, this);
+    HFSM* notFindEnemyHfsm = new HFSM(HFSMNodeStateID::NOT_FIND_ENEMY_FSM);
     auto enterNotFindEnemy = aliveHfsm->addState(notFindEnemyHfsm, true);
     enterNotFindEnemy->addConditions(condiNotFoundEnemy);
 
@@ -56,15 +56,15 @@ bool HFSMNode::init()
 
     // notFindEnemy FSM (wander state, idle state)
     auto condiHpNotFull = [](AINode* aiNode, float timer) -> bool {
-        return aiNode->getHP() < 100;
+        return static_cast<AIAttackNode*>(aiNode)->getHP() < 100;
     };
     auto condiHpFull = [](AINode* aiNode, float timer) -> bool {
-        return aiNode->getHP() >= 100;
+        return static_cast<AIAttackNode*>(aiNode)->getHP() >= 100;
     };
-    HState* wanderHState = new WanderHState(HFSMNodeStateID::WANDER_STATE, this);
+    HState* wanderHState = new WanderHState(HFSMNodeStateID::WANDER_STATE);
     auto enterWander = notFindEnemyHfsm->addState(wanderHState, true);
     enterWander->addConditions(condiHpFull);
-    HState* idleHState = new IdleHState(HFSMNodeStateID::IDLE_STATE, this);
+    HState* idleHState = new IdleHState(HFSMNodeStateID::IDLE_STATE);
     auto enterIdle = notFindEnemyHfsm->addState(idleHState, true);
     enterIdle->addConditions(condiHpNotFull);
 
@@ -75,27 +75,27 @@ bool HFSMNode::init()
 
     // findEnemy FSM (attack state, pursuit state, evading state)
     auto condiFoundPursuit = [](AINode* aiNode, float timer) -> bool {
-        return aiNode->inPursuitRange();
+        return static_cast<AIAttackNode*>(aiNode)->inPursuitRange();
     };
     auto condiEnemyInAttackRange = [](AINode* aiNode, float timer) -> bool {
-        return aiNode->inAttackRange();
+        return static_cast<AIAttackNode*>(aiNode)->inAttackRange();
     };
     auto condiHpUnEnough = [](AINode* aiNode, float timer) -> bool {
-        return aiNode->getHP() < 20;
+        return static_cast<AIAttackNode*>(aiNode)->getHP() < 20;
     };
     auto condiHpEnough = [](AINode* aiNode, float timer) -> bool {
-        return aiNode->getHP() >= 20;
+        return static_cast<AIAttackNode*>(aiNode)->getHP() >= 20;
     };
 
-    HState* attackHState = new AttackHState(HFSMNodeStateID::ATTACK_STATE, this);
+    HState* attackHState = new AttackHState(HFSMNodeStateID::ATTACK_STATE);
     auto enterAttack = findEnemyHfsm->addState(attackHState, true);
     enterAttack->addConditions(condiHpEnough);
     enterAttack->addConditions(condiEnemyInAttackRange);
-    HState* pursuitHState = new PursuitHState(HFSMNodeStateID::PURSUIT_STATE, this);
+    HState* pursuitHState = new PursuitHState(HFSMNodeStateID::PURSUIT_STATE);
     auto enterPursuit = findEnemyHfsm->addState(pursuitHState, true);
     enterPursuit->addConditions(condiHpEnough);
     enterPursuit->addConditions(condiFoundPursuit);
-    HState* evadingHState = new EvadingHState(HFSMNodeStateID::EVADING_STATE, this);
+    HState* evadingHState = new EvadingHState(HFSMNodeStateID::EVADING_STATE);
     auto enterEvading = findEnemyHfsm->addState(evadingHState, true);
     enterEvading->addConditions(condiHpUnEnough);
 
@@ -108,11 +108,11 @@ bool HFSMNode::init()
     auto pursuitToEvading = findEnemyHfsm->addTransition(HFSMNodeStateID::PURSUIT_STATE, HFSMNodeStateID::EVADING_STATE);
     pursuitToEvading->addConditions(condiHpUnEnough);
 
-    _hfsm->invokeHFSM();
+    _hfsm->invokeHFSM(this);
     return true;
 }
 
 void HFSMNode::update(float dt) {
-    AINode::update(dt);
-    _hfsm->onAction(dt);
+    AIAttackNode::update(dt);
+    _hfsm->onUpdate(dt, this);
 }

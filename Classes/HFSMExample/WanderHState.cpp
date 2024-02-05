@@ -1,15 +1,15 @@
 #include "WanderHState.h"
 
-void WanderHState::onEnterAction() {
+void WanderHState::onEnterAction(AINode* aiNode) {
 	CCLOG("WanderHState::onEnterAction  ");
 }
 
-void WanderHState::onExitAction() {
+void WanderHState::onExitAction(AINode* aiNode) {
 	CCLOG("WanderHState::onExitAction  ");
 }
 
-void WanderHState::onUpdateAction(float dt) {
+void WanderHState::onUpdateAction(float dt, AINode* aiNode) {
 	CCLOG("WanderHState::onUpdateAction  ");
-	_aiNode->setRestInterval(_aiNode->getRestInterval() - dt);
-	_aiNode->wander(dt);
+	static_cast<AIAttackNode*>(aiNode)->setRestInterval(static_cast<AIAttackNode*>(aiNode)->getRestInterval() - dt);
+	static_cast<AIAttackNode*>(aiNode)->wander(dt);
 }

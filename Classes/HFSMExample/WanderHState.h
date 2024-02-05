@@ -2,15 +2,16 @@
 #define __WANDER_HSTATE_H__
 
 #include "HFSM/HState.h"
+#include "AIAttackNode.h"
 class WanderHState :
     public HState
 {
 public:
-	WanderHState(int stateId, AINode* aiNode) : HState(stateId, aiNode) {}
+	WanderHState(int stateId) : HState(stateId) {}
 private:
-	virtual void onEnterAction();
-	virtual void onExitAction();
-	virtual void onUpdateAction(float dt);
+	virtual void onEnterAction(AINode* aiNode);
+	virtual void onExitAction(AINode* aiNode);
+	virtual void onUpdateAction(float dt, AINode* aiNode);
 };
 
 #endif

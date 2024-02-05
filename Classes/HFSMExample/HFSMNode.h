@@ -1,7 +1,7 @@
 #ifndef _HFSM_NODE_H__
 #define _HFSM_NODE_H__
 
-#include "AINode.h"
+#include "AIAttackNode.h"
 #include "HFSM/HFSM.h"
 #include "WanderHState.h"
 #include "IdleHState.h"
@@ -11,7 +11,7 @@
 #include "DeadHState.h"
 using namespace std;
 
-class HFSMNode : public AINode
+class HFSMNode : public AIAttackNode
 {
 public:
 	static HFSMNode* create();

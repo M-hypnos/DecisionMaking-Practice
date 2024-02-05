@@ -1,7 +1,7 @@
 #include "HFSM.h"
 
-HFSM::HFSM(int stateId, AINode* aiNode)
-: HState(stateId, aiNode)
+HFSM::HFSM(int stateId)
+: HState(stateId)
 , _curState(nullptr)
 , _lastState(nullptr)
 , _defalutStateId(-1)
@@ -22,7 +22,7 @@ HFSM::~HFSM() {
 	_allStates.clear();
 }
 
-void HFSM::onEnterAction() {
+void HFSM::onEnterAction(AINode* aiNode) {
 	CCLOG("HFSM::onEnterAction %d ", getStateId());
 	if (_allStates.empty()) {
 		CCLOG("=======>> warn: no sub state  %d ", getStateId());
@@ -32,59 +32,59 @@ void HFSM::onEnterAction() {
 		CCLOG("=======>> warn: enter active HFSM  %d ", getStateId());
 		return;
 	}
-	int stateId = getEnterState();
+	int stateId = getEnterState(aiNode);
 	if (stateId < 0) {
 		CCLOG("=======>> error: can not enter HFSM  %d ", getStateId());
 		return;
 	}
 	_curState = _allStates[stateId];
-	_curState->onEnter();
+	_curState->onEnter(aiNode);
 }
 
-void HFSM::onExitAction() {
+void HFSM::onExitAction(AINode* aiNode) {
 	if (_curState == nullptr) return;
-	_curState->onExit();
+	_curState->onExit(aiNode);
 	_curState = nullptr;
 	CCLOG("HFSM::onExitAction  %d ", getStateId());
 }
 
-void HFSM::onUpdateAction(float dt) {
+void HFSM::onUpdateAction(float dt, AINode* aiNode) {
 	if (_curState == nullptr) {
 		CCLOG("=======>> warn: no active state HFSM  %d ", getStateId());
 		return;
 	}
 	CCLOG("HFSM::onUpdateAction %d ", getStateId());
-	int stateId = getUpdateState();
+	int stateId = getUpdateState(aiNode);
 	if (stateId < 0) {
 		CCLOG("=======>> error: can not update HFSM  %d ", getStateId());
 		return;
 	}
 	if (*_curState == *_allStates[stateId]) {
-		_curState->onUpdate(dt);
+		_curState->onUpdate(dt, aiNode);
 	}
 	else {
-		_curState->onExit();
+		_curState->onExit(aiNode);
 		_lastState = _curState;
 		_curState = _allStates[stateId];
-		_curState->onEnter();
+		_curState->onEnter(aiNode);
 	}
 }
 
-void HFSM::onAction(float dt) {
+void HFSM::onUpdate(float dt, AINode* aiNode) {
 	if (!isRootMachine()) return;
-	onUpdate(dt);
+	HState::onUpdate(dt, aiNode);
 }
 
-void HFSM::invokeHFSM() {
+void HFSM::invokeHFSM(AINode* aiNode) {
 	if (!isRootMachine()) return;
-	int stateId = getEnterState();
+	int stateId = getEnterState(aiNode);
 	if (stateId < 0) return;
 	_isActived = true;
 	_curState = _allStates[stateId];
-	_curState->onEnter();
+	_curState->onEnter(aiNode);
 }
 
-int HFSM::getUpdateState() {
+int HFSM::getUpdateState(AINode* aiNode) {
 	if (!_sortTans) {
 		_sortTans = true;
 		sort(_trans.begin(), _trans.end(), [&](const HTransition* a, const HTransition* b)->bool { return a->getWeight() > b->getWeight(); });
@@ -92,14 +92,14 @@ int HFSM::getUpdateState() {
 	}
 	for (auto tran : _trans) {
 		bool isCurStateTrans = _curState->getStateId() == tran->getFromStateId();
-		if (isCurStateTrans && tran->checkChangeState(_aiNode, _timer)) {
+		if (isCurStateTrans && tran->checkChangeState(aiNode, _timer)) {
 			return tran->getToStateId();
 		}
 	}
 	return _curState->getStateId();
 }
 
-int HFSM::getEnterState() {
+int HFSM::getEnterState(AINode* aiNode) {
 	if (!_sortTans) {
 		_sortTans = true;
 		sort(_trans.begin(), _trans.end(), [&](const HTransition* a, const HTransition* b)->bool { return a->getWeight() > b->getWeight(); });
@@ -107,7 +107,7 @@ int HFSM::getEnterState() {
 	}
 	for (auto tran : _enterTrans) {
 		bool isCurStateTrans = _id == tran->getFromStateId();
-		if (isCurStateTrans && tran->checkChangeState(_aiNode, _timer)) {
+		if (isCurStateTrans && tran->checkChangeState(aiNode, _timer)) {
 			return tran->getToStateId();
 		}
 	}

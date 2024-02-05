@@ -8,13 +8,13 @@ class HState
 {
 public:
 	HState() = delete;
-	HState(int stateId, AINode* aiNode);
+	HState(int stateId);
 
 	virtual ~HState();
 
-	void onEnter();
-	void onExit();
-	void onUpdate(float dt);
+	void onEnter(AINode* aiNode);
+	void onExit(AINode* aiNode);
+	virtual void onUpdate(float dt, AINode* aiNode);
 
 	int getStateId() const { return _id; }
 
@@ -27,13 +27,12 @@ protected:
 	int _id;
 	bool _isActived;
 	float _timer;
-	AINode* _aiNode;
 	HState* _parentMachine;
 
 private:
-	virtual void onEnterAction() = 0;
-	virtual void onExitAction() = 0;
-	virtual void onUpdateAction(float dt) = 0;
+	virtual void onEnterAction(AINode* aiNode) = 0;
+	virtual void onExitAction(AINode* aiNode) = 0;
+	virtual void onUpdateAction(float dt, AINode* aiNode) = 0;
 };
 
 #endif
