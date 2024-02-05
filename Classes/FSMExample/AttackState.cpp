@@ -1,20 +1,20 @@
 #include "AttackState.h"
 
-void AttackState::onEnterAction() {
+void AttackState::onEnterAction(AINode* aiNode) {
 	CCLOG("AttackState::onEnterAction  ");
-	_aiNode->setVelocity(Vec2::ZERO);
-	_aiNode->stopORCA();
+	static_cast<AIAttackNode*>(aiNode)->setVelocity(Vec2::ZERO);
+	static_cast<AIAttackNode*>(aiNode)->stopORCA();
 }
 
-void AttackState::onExitAction() {
+void AttackState::onExitAction(AINode* aiNode) {
 	CCLOG("AttackState::onExitAction  ");
-	_aiNode->resumeORCA();
-	_aiNode->stopAttack();
+	static_cast<AIAttackNode*>(aiNode)->resumeORCA();
+	static_cast<AIAttackNode*>(aiNode)->stopAttack();
 }
 
-void AttackState::onUpdateAction(float dt) {
+void AttackState::onUpdateAction(float dt, AINode* aiNode) {
 	CCLOG("AttackState::onUpdateAction  ");
-	_aiNode->setVelocity(Vec2::ZERO);
-	_aiNode->setRestInterval(_aiNode->getRestInterval() - dt);
-	_aiNode->attack();
+	static_cast<AIAttackNode*>(aiNode)->setVelocity(Vec2::ZERO);
+	static_cast<AIAttackNode*>(aiNode)->setRestInterval(static_cast<AIAttackNode*>(aiNode)->getRestInterval() - dt);
+	static_cast<AIAttackNode*>(aiNode)->attack();
 }

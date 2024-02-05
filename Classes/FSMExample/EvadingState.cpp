@@ -1,15 +1,15 @@
 #include "EvadingState.h"
 
-void EvadingState::onEnterAction() {
+void EvadingState::onEnterAction(AINode* aiNode) {
 	CCLOG("EvadingState::onEnterAction  ");
 }
 
-void EvadingState::onExitAction() {
+void EvadingState::onExitAction(AINode* aiNode) {
 	CCLOG("EvadingState::onExitAction  ");
 }
 
-void EvadingState::onUpdateAction(float dt) {
+void EvadingState::onUpdateAction(float dt, AINode* aiNode) {
 	CCLOG("EvadingState::onUpdateAction  ");
-	_aiNode->setRestInterval(_aiNode->getRestInterval() - dt);
-	_aiNode->evading(dt);
+	static_cast<AIAttackNode*>(aiNode)->setRestInterval(static_cast<AIAttackNode*>(aiNode)->getRestInterval() - dt);
+	static_cast<AIAttackNode*>(aiNode)->evading(dt);
 }

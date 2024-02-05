@@ -1,13 +1,12 @@
 #include "BaseState.h"
 
-BaseState::BaseState(int id, AINode* aiNode)
+BaseState::BaseState(int id)
 : _id(id)
 , _isActived(false)
 , _timer(0)
 , _checkTimer(0)
 , _checkIntervel(-1)
 , _sortTans(false)
-, _aiNode(aiNode)
 {};
 
 BaseState::~BaseState(){
@@ -17,25 +16,25 @@ BaseState::~BaseState(){
 	_trans.clear();
 }
 
-void BaseState::onEnter() {
+void BaseState::onEnter(AINode* aiNode) {
 	if (_isActived) return;
 	_timer = 0;
 	_checkTimer = 0;
 	_isActived = true;
-	onEnterAction();
+	onEnterAction(aiNode);
 }
 
-void BaseState::onExit() {
+void BaseState::onExit(AINode* aiNode) {
 	if (!_isActived) return;
 	_timer = 0;
 	_isActived = false;
-	onExitAction();
+	onExitAction(aiNode);
 }
 
-void BaseState::onUpdate(float dt) {
+void BaseState::onUpdate(float dt, AINode* aiNode) {
 	if (!_isActived) return;
 	_timer += dt;
-	onUpdateAction(dt);
+	onUpdateAction(dt, aiNode);
 }
 
 Transition* BaseState::addTransition(int toStateId) {
@@ -45,7 +44,7 @@ Transition* BaseState::addTransition(int toStateId) {
 	return tran;
 }
 
-int BaseState::checkChangeState(float dt) {
+int BaseState::checkChangeState(float dt, AINode* aiNode) {
 	if (!_isActived)  return -1;
 	if (_checkTimer < _checkIntervel) {
 		_checkTimer += dt;
@@ -57,7 +56,7 @@ int BaseState::checkChangeState(float dt) {
 		sort(_trans.begin(), _trans.end(), [&](const Transition* a, const Transition* b)->bool { return a->getWeight() > b->getWeight(); });
 	}
 	for (auto tran : _trans) {
-		if (tran->checkChangeState(_aiNode, _timer)) {
+		if (tran->checkChangeState(aiNode, _timer)) {
 			return tran->getToStateId();
 		}
 	}

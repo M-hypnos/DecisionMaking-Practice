@@ -2,15 +2,16 @@
 #define __DEAD_STATE_H__
 
 #include "FSM/BaseState.h"
+#include "AIAttackNode.h"
 class DeadState :
     public BaseState
 {
 public:
-	DeadState(int stateId, AINode* aiNode) : BaseState(stateId, aiNode) {}
+	DeadState(int stateId) : BaseState(stateId) {}
 private:
-	virtual void onEnterAction();
-	virtual void onExitAction();
-	virtual void onUpdateAction(float dt);
+	virtual void onEnterAction(AINode* aiNode);
+	virtual void onExitAction(AINode* aiNode);
+	virtual void onUpdateAction(float dt, AINode* aiNode);
 };
 
 #endif

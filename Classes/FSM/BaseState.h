@@ -9,16 +9,16 @@ class BaseState
 {
 public:
 	BaseState() = delete;
-	BaseState(int stateId, AINode* aiNode);
+	BaseState(int stateId);
 
 	virtual ~BaseState();
 
-	void onEnter();
-	void onExit();
-	void onUpdate(float dt);
+	void onEnter(AINode* aiNode);
+	void onExit(AINode* aiNode);
+	void onUpdate(float dt, AINode* aiNode);
 
 	Transition* addTransition(int toStateId);
-	int checkChangeState(float dt);
+	int checkChangeState(float dt, AINode* aiNode);
 
 	int getStateId() const { return _id; }
 	void setCheckInterval(float checkInterval) { _checkIntervel = checkInterval; }
@@ -32,12 +32,11 @@ protected:
 	float _checkTimer;
 	float _checkIntervel;
 	bool _sortTans;
-	AINode* _aiNode;
 	vector<Transition*> _trans;
 private:
-	virtual void onEnterAction() = 0;
-	virtual void onExitAction() = 0;
-	virtual void onUpdateAction(float dt) = 0;
+	virtual void onEnterAction(AINode* aiNode) = 0;
+	virtual void onExitAction(AINode* aiNode) = 0;
+	virtual void onUpdateAction(float dt, AINode* aiNode) = 0;
 };
 
 #endif
