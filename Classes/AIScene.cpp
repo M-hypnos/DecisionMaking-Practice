@@ -115,6 +115,7 @@ bool AIScene::init()
     }*/
 
     m_sim->processObstacles(); 
+    createAILogNode();
 
     return true;
 }
@@ -123,22 +124,14 @@ bool AIScene::onTouchBegan(Touch* touch, Event* event)
 {
     _touchBeganPosition = touch->getLocation();
     createFSMNode();
+    createFSMNode();
     createHFSMNode();
+    createHFSMNode();
+    createHFSMNode();
+    createBTTreeNode();
+    createBTTreeNode();
 
-    /*auto node = FSMNode::create();
-    auto body = DrawNode::create();
-    node->_renderNode->addChild(body, -1);
-    body->drawDot(Vec2(0, 0), node->getRidius(), Color4F(0, 1, 0, 0.5));
-    node->setPosition(_touchBeganPosition+Vec2(300,100));
-    node->setId(_aiNodeIdx);
-    this->addChild(node);
-    _aiNodes.push_back(node);
-
-    int idx = m_sim->addAgent(Vector2(_touchBeganPosition.x+300, _touchBeganPosition.y+100));
-    m_sim->setAgentType(idx, 1);
-    m_sim->setAgentAINode(idx, node);
-
-    _aiNodeIdx++;*/
+    //_aiLogNode->startTree();
 
     return true;
 }
@@ -192,8 +185,6 @@ void AIScene::createFSMNode() {
 void AIScene::createHFSMNode() {
     float x = RandomHelper::random_real<float>(600, 800);
     float y = RandomHelper::random_real<float>(440, 640);
-    /*float x = RandomHelper::random_real<float>(0, 200);
-    float y = RandomHelper::random_real<float>(0, 200);*/
     Vec2 v(x, y);
     auto node = _aiNodeManager->getHFSMNode();
     node->setPosition(v);
@@ -206,4 +197,27 @@ void AIScene::createHFSMNode() {
     m_sim->setAgentType(idx, int(AINodeType::HFSMNode));
 
     _aiNodeIdx++;
+}
+
+void AIScene::createBTTreeNode() {
+    float x = RandomHelper::random_real<float>(1200, 1400);
+    float y = RandomHelper::random_real<float>(0, 200);
+    Vec2 v(x, y);
+    auto node = _aiNodeManager->getBTTreeNode();
+    node->setPosition(v);
+    node->setId(_aiNodeIdx);
+    this->addChild(node);
+    _aiNodes.push_back(node);
+
+    int idx = m_sim->addAgent(Vector2(v.x, v.y));
+    m_sim->setAgentAINode(idx, node);
+    m_sim->setAgentType(idx, int(AINodeType::BTTreeNode));
+
+    _aiNodeIdx++;
+}
+
+void AIScene::createAILogNode() {
+    _aiLogNode = AILogNode::create();
+    this->addChild(_aiLogNode);
+    _aiLogNode->setPosition(Vec2(700, 320));
 }

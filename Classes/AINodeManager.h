@@ -4,6 +4,7 @@
 #include "cocos2d.h"
 #include "FSMExample/FSMNode.h"
 #include "HFSMExample/HFSMNode.h"
+#include "BTExample/BTTreeNode.h"
 
 USING_NS_CC;
 using namespace std;
@@ -11,13 +12,15 @@ using namespace std;
 enum class AINodeType {
 	FSMNode,
 	HFSMNode,
+	BTTreeNode
 };
 
 class AINodeManager
 {
 public:
-	AINode* getFSMNode();
-	AINode* getHFSMNode();
+	AIAttackNode* getFSMNode();
+	AIAttackNode* getHFSMNode();
+	AIAttackNode* getBTTreeNode();
 
 protected:
 	

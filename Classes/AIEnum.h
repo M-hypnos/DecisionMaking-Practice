@@ -42,4 +42,20 @@ enum HFSMNodeStateID
 	IDLE_STATE
 };
 
+enum BTPreconditionType
+{
+	BTAND,
+	BTOR,
+	BTNUM
+};
+
+enum BTResult
+{
+	NONE,
+	SUCCESS,
+	FAIL,
+	RUNNING,
+	INTERRUPT
+};
+
 #endif

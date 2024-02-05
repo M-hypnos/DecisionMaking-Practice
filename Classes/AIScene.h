@@ -5,6 +5,7 @@
 #include "AINodeManager.h"
 #include "ORCA/RVOSimulator.h"
 #include "ORCA/Vector2.h"
+#include "AILogNode.h"
 USING_NS_CC;
 using namespace std;
 using namespace RVO;
@@ -24,6 +25,8 @@ public:
 
     void createFSMNode();
     void createHFSMNode();
+    void createBTTreeNode();
+    void createAILogNode();
 
     RVOSimulator* getRVOSim() { return m_sim; }
 
@@ -34,7 +37,8 @@ protected:
 
     AINodeManager* _aiNodeManager;
 
-    vector<AINode*> _aiNodes;
+    vector<AIAttackNode*> _aiNodes;
+    AILogNode* _aiLogNode;
 
     RVO::RVOSimulator* m_sim;
 
