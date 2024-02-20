@@ -11,11 +11,8 @@ FSMNode* FSMNode::create() {
 }
 
 FSMNode::~FSMNode() {
-    unordered_map<int, BaseState*> allStates = _fsm->getAllStates();
-    for (auto state : allStates) {
-        delete state.second;
-    }
     delete _fsm;
+    _fsm = nullptr;
 }
 
 bool FSMNode::init()

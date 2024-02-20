@@ -1,5 +1,9 @@
 #include "Transition.h"
 
+Transition::~Transition() {
+	_conditions.clear();
+}
+
 bool Transition::checkChangeState(AINode* aiNode, float timer) {
 	switch (_transitionType) {
 		case TransitionType::AND:

@@ -18,6 +18,8 @@ public:
 	unordered_map<int, BaseState*> getAllStates() { return _allStates; }
 	~FSM();
 private:
+	/*shared_ptr<BaseState> _curState;
+	shared_ptr<BaseState> _lastState:*/
 	BaseState* _curState;
 	BaseState* _lastState;
 	unordered_map<int, BaseState*> _allStates;

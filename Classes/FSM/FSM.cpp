@@ -8,7 +8,12 @@ FSM::FSM()
 }
 
 FSM::~FSM() {
+	for (auto state : _allStates) {
+		delete state.second;
+	}
 	_allStates.clear();
+	_curState = nullptr;
+	_lastState = nullptr;
 }
 
 void FSM::onUpdate(float dt, AINode* aiNode) {
