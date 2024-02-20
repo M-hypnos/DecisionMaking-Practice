@@ -129,7 +129,7 @@ namespace RVO {
 		 * \brief      Builds an agent <i>k</i>d-tree.
 		 */
 		void buildAgentTree();
-
+		void refreshAgents();
 		void buildAgentTreeRecursive(size_t begin, size_t end, size_t node);
 
 		/**

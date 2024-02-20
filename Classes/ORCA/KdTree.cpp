@@ -44,15 +44,25 @@ namespace RVO {
 		deleteObstacleTree(obstacleTree_);
 	}
 
+	void KdTree::refreshAgents() {
+		if (agentTree_.size() < 2 * sim_->agents_.size() - 1) {
+			agentTree_.resize(2 * sim_->agents_.size() - 1);
+		}
+		agents_.clear();
+		for (auto iterator : sim_->getAgents()) {
+			agents_.push_back(iterator.second);
+		}
+	}
+
 	void KdTree::buildAgentTree()
 	{
-		if (agents_.size() < sim_->agents_.size()) {
+		/*if (agents_.size() < sim_->agents_.size()) {
 			for (size_t i = agents_.size(); i < sim_->agents_.size(); ++i) {
 				agents_.push_back(sim_->agents_[i]);
 			}
 
-			agentTree_.resize(2 * agents_.size() - 1);
-		}
+			agentTree_.resize(2 * sim_->agents_.size() - 1);
+		}*/
 
 		if (!agents_.empty()) {
 			buildAgentTreeRecursive(0, agents_.size(), 0);

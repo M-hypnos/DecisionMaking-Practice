@@ -41,6 +41,7 @@
 #include <cstddef>
 #include <limits>
 #include <vector>
+#include<unordered_map>
 
 #include "Vector2.h"
 #include "AINode.h"
@@ -583,13 +584,19 @@ namespace RVO {
 		void setAgentWeight(size_t agentNo, const float weight);
 
 		void setAgentAINode(size_t agentNo, AINode* aiNode);
+
+		void removeAgent(size_t agentNo);
+
+		unordered_map<size_t, Agent*> getAgents() { return agents_; }
 	private:
-		std::vector<Agent *> agents_;
+		size_t agentId_;
+		unordered_map<size_t, Agent *> agents_;
 		Agent *defaultAgent_;
 		float globalTime_;
 		KdTree *kdTree_;
 		std::vector<Obstacle *> obstacles_;
 		float timeStep_;
+		bool refreshKdTree_;
 
 		friend class Agent;
 		friend class KdTree;
