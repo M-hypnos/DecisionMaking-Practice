@@ -8,7 +8,7 @@ HState::HState(int id)
 {};
 
 HState::~HState(){
-
+	_parentMachine = nullptr;
 }
 
 void HState::onEnter(AINode* aiNode) {

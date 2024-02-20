@@ -1,5 +1,9 @@
 #include "HTransition.h"
 
+HTransition::~HTransition() {
+	_conditions.clear();
+}
+
 bool HTransition::checkChangeState(AINode* aiNode, float timer) {
 	switch (_transitionType) {
 		case HTransitionType::HAND:

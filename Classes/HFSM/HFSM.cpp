@@ -19,11 +19,16 @@ HFSM::~HFSM() {
 		delete tran;
 	}
 	_enterTrans.clear();
+	for (auto state : _allStates) {
+		delete state.second;
+	}
 	_allStates.clear();
+	_curState = nullptr;
+	_lastState = nullptr;
 }
 
 void HFSM::onEnterAction(AINode* aiNode) {
-	CCLOG("HFSM::onEnterAction %d ", getStateId());
+	//CCLOG("HFSM::onEnterAction %d ", getStateId());
 	if (_allStates.empty()) {
 		CCLOG("=======>> warn: no sub state  %d ", getStateId());
 		return;
@@ -45,7 +50,7 @@ void HFSM::onExitAction(AINode* aiNode) {
 	if (_curState == nullptr) return;
 	_curState->onExit(aiNode);
 	_curState = nullptr;
-	CCLOG("HFSM::onExitAction  %d ", getStateId());
+	//CCLOG("HFSM::onExitAction  %d ", getStateId());
 }
 
 void HFSM::onUpdateAction(float dt, AINode* aiNode) {
@@ -53,7 +58,7 @@ void HFSM::onUpdateAction(float dt, AINode* aiNode) {
 		CCLOG("=======>> warn: no active state HFSM  %d ", getStateId());
 		return;
 	}
-	CCLOG("HFSM::onUpdateAction %d ", getStateId());
+	//CCLOG("HFSM::onUpdateAction %d ", getStateId());
 	int stateId = getUpdateState(aiNode);
 	if (stateId < 0) {
 		CCLOG("=======>> error: can not update HFSM  %d ", getStateId());

@@ -11,11 +11,8 @@ HFSMNode* HFSMNode::create() {
 }
 
 HFSMNode::~HFSMNode() {
-    unordered_map<int, HState*> allStates = _hfsm->getAllStates();
-    for (auto state : allStates) {
-        delete state.second;
-    }
     delete _hfsm;
+    _hfsm = nullptr;
 }
 
 bool HFSMNode::init()
