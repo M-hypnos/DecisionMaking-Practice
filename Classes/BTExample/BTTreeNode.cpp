@@ -12,6 +12,7 @@ BTTreeNode* BTTreeNode::create() {
 
 BTTreeNode::~BTTreeNode() {
     delete _btTree;
+    _btTree = nullptr;
 }
 
 bool BTTreeNode::init()

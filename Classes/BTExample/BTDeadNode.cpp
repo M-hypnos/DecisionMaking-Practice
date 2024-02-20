@@ -1,19 +1,20 @@
 #include "BTDeadNode.h"
 
 void BTDeadNode::onEnterAction(AINode* aiNode) {
-	CCLOG("BTDeadNode::onEnterAction  ");
+	//CCLOG("BTDeadNode::onEnterAction  ");
 	static_cast<AIAttackNode*>(aiNode)->setVelocity(Vec2::ZERO);
 	static_cast<AIAttackNode*>(aiNode)->stopORCA();
 	static_cast<AIAttackNode*>(aiNode)->setDead();
 }
 
 void BTDeadNode::onExitAction(AINode* aiNode, BTResult result) {
-	CCLOG("BTDeadNode::onExitAction  ");
+	//CCLOG("BTDeadNode::onExitAction  ");
 	static_cast<AIAttackNode*>(aiNode)->resumeORCA();
 }
 
 BTResult BTDeadNode::onUpdateAction(float dt, AINode* aiNode) {
-	CCLOG("BTDeadNode::onUpdateAction  ");
+	//CCLOG("BTDeadNode::onUpdateAction  ");
 	static_cast<AIAttackNode*>(aiNode)->setVelocity(Vec2::ZERO);
+	static_cast<AIAttackNode*>(aiNode)->addDeadTime(dt);
 	return BTResult::RUNNING;
 }
