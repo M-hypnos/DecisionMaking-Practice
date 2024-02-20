@@ -3,6 +3,7 @@
 
 #include "cocos2d.h"
 #include "AINode.h"
+
 USING_NS_CC;
 using namespace std;
 
@@ -57,7 +58,7 @@ CC_CONSTRUCTOR_ACCESS:
 	void stopORCA();
 	void resumeORCA();
 
-	float getHP() { return _hp; }
+	int getHP() { return _hp; }
 
 	Node* _renderNode;
 
@@ -66,6 +67,10 @@ CC_CONSTRUCTOR_ACCESS:
 	virtual bool isStopORCA() override;
 
 	void setDead();
+
+	void addDeadTime(float dt);
+
+	float getDeadTime() { return _deadTime; }
 protected:
 	DrawNode* _direct;
 	int _id;
@@ -97,6 +102,8 @@ protected:
 	Label* _label;
 
 	float _recoverTime = 0;
+
+	float _deadTime = 0;
 };
 
 #endif

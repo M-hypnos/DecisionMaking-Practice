@@ -14,6 +14,7 @@ class AIScene : public Scene
 public:
 	static Scene* createScene();
 
+    virtual ~AIScene();
     virtual bool init();
 
     virtual bool onTouchBegan(Touch* touch, Event* unused_event);
@@ -37,7 +38,7 @@ protected:
 
     AINodeManager* _aiNodeManager;
 
-    vector<AIAttackNode*> _aiNodes;
+    unordered_map<int, AIAttackNode*> _aiNodes;
     AILogNode* _aiLogNode;
 
     RVO::RVOSimulator* m_sim;

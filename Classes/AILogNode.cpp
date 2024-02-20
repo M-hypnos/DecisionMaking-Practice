@@ -10,6 +10,11 @@ AILogNode* AILogNode::create() {
     return nullptr;
 }
 
+AILogNode::~AILogNode() {
+    delete _btTree;
+    _btTree = nullptr;
+}
+
 bool AILogNode::init()
 {
     _label = Label::create();

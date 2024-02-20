@@ -11,6 +11,13 @@ static void problemLoading(const char* filename)
     printf("Depending on how you compiled you might have to add 'Resources/' in front of filenames in AIScene.cpp\n");
 }
 
+AIScene::~AIScene() {
+    delete m_sim;
+    m_sim = nullptr;
+    delete _aiNodeManager;
+    _aiNodeManager = nullptr;
+}
+
 // on "init" you need to initialize your instance
 bool AIScene::init()
 {
@@ -37,6 +44,7 @@ bool AIScene::init()
 
     this->scheduleUpdate();
 
+    _aiNodeManager = new AINodeManager();
     m_sim = new RVO::RVOSimulator();
     m_sim->setAgentDefaults(50.0f, 2, 1.0f, 5.0f, 10.0f, 1);
 
@@ -138,28 +146,44 @@ bool AIScene::onTouchBegan(Touch* touch, Event* event)
 
 void AIScene::update(float dt) {
     m_sim->setTimeStep(dt);
-    for (auto aiNode: _aiNodes) {
+    auto iter = _aiNodes.begin();
+    while (iter != _aiNodes.end()) {
+        int idx = (*iter).second->getId();
+        if ((*iter).second->getDeadTime() > 4) {
+            m_sim->removeAgent(idx);
+            (*iter).second->removeFromParent();
+            iter = _aiNodes.erase(iter++);
+        }
+        else {
+            Vec2 velocity = (*iter).second->getVelocity();
+            m_sim->setAgentMaxSpeed(idx, 1 / dt);
+            m_sim->setAgentPrefVelocity(idx, Vector2(velocity.x * 1 / dt, velocity.y * 1 / dt));
+            iter++;
+        }
+    }
+    
+    /*for (auto aiNode: _aiNodes) {
         int idx = aiNode->getId();
         Vec2 velocity = aiNode->getVelocity();
         m_sim->setAgentMaxSpeed(idx, 1/dt);
         m_sim->setAgentPrefVelocity(idx, Vector2(velocity.x * 1 / dt, velocity.y * 1 / dt));
-    }
+    }*/
 
     m_sim->doStep();
 
-    for (auto aiNode : _aiNodes) {
-        int idx = aiNode->getId();
+    for (auto iter : _aiNodes) {
+        int idx = iter.second->getId();
         Vector2 velocity = m_sim->getAgentVelocity(idx);
         Vector2 v = m_sim->getAgentPosition(idx);
-        aiNode->updatePos(Vec2(velocity.x() * dt, velocity.y() * dt));
-        aiNode->setPosition(Vec2(v.x(), v.y()));
+        iter.second->updatePos(Vec2(velocity.x() * dt, velocity.y() * dt));
+        iter.second->setPosition(Vec2(v.x(), v.y()));
 
-        int enemyIdx = m_sim->getNearestEnemy(idx, aiNode->getPursuitRidius());
+        int enemyIdx = m_sim->getNearestEnemy(idx, iter.second->getPursuitRidius());
         if (enemyIdx >= 0) {
-            aiNode->setNearestEnemy(_aiNodes[enemyIdx]);
+            iter.second->setNearestEnemy(_aiNodes[enemyIdx]);
         }
         else {
-            aiNode->setNearestEnemy(nullptr);
+            iter.second->setNearestEnemy(nullptr);
         }
     }
 }
@@ -173,13 +197,12 @@ void AIScene::createFSMNode() {
     node->setPosition(v);
     node->setId(_aiNodeIdx);
     this->addChild(node);
-    _aiNodes.push_back(node);
 
     int idx = m_sim->addAgent(Vector2(v.x, v.y));
     m_sim->setAgentAINode(idx, node);
     m_sim->setAgentType(idx, int(AINodeType::FSMNode));
 
-    _aiNodeIdx++;
+    _aiNodes.emplace(_aiNodeIdx++, node);
 }
 
 void AIScene::createHFSMNode() {
@@ -190,13 +213,12 @@ void AIScene::createHFSMNode() {
     node->setPosition(v);
     node->setId(_aiNodeIdx);
     this->addChild(node);
-    _aiNodes.push_back(node);
 
     int idx = m_sim->addAgent(Vector2(v.x, v.y));
     m_sim->setAgentAINode(idx, node);
     m_sim->setAgentType(idx, int(AINodeType::HFSMNode));
 
-    _aiNodeIdx++;
+    _aiNodes.emplace(_aiNodeIdx++, node);
 }
 
 void AIScene::createBTTreeNode() {
@@ -207,13 +229,12 @@ void AIScene::createBTTreeNode() {
     node->setPosition(v);
     node->setId(_aiNodeIdx);
     this->addChild(node);
-    _aiNodes.push_back(node);
 
     int idx = m_sim->addAgent(Vector2(v.x, v.y));
     m_sim->setAgentAINode(idx, node);
     m_sim->setAgentType(idx, int(AINodeType::BTTreeNode));
 
-    _aiNodeIdx++;
+    _aiNodes.emplace(_aiNodeIdx++, node);
 }
 
 void AIScene::createAILogNode() {

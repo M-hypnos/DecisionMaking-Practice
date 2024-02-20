@@ -13,6 +13,7 @@ public:
 	static AILogNode* create();
 
 CC_CONSTRUCTOR_ACCESS:
+	virtual ~AILogNode();
 	virtual bool init() override;
 
 	void setString(string str);
