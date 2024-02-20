@@ -18,7 +18,7 @@ public:
 	virtual bool evaluate(AINode* aiNode);
 	virtual ~BTNode();
 	BTNode* _parentNode;
-	virtual void clear();
+	void clear();
 	virtual void addChild(BTNode* node) { node->_parentNode = this; }
 	void addPrecondition(BTPrecondition* precondition) { _precondition = precondition; }
 	bool isRunning() { return _isRunning; }

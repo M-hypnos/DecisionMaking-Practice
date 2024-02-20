@@ -9,7 +9,6 @@ class BTParallelNode : public BTControlNode
 {
 public:
 	BTParallelNode(int successTarNum = 1);
-	virtual void clear() override;
 	virtual void onInterrupt(AINode* aiNode) override;
 	virtual ~BTParallelNode();
 protected:

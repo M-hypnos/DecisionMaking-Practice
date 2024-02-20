@@ -1,7 +1,8 @@
 #include "BTDecoratorNode.h"
 
-void BTDecoratorNode::clear() {
+BTDecoratorNode::~BTDecoratorNode() {
 	delete _childNode;
+	_childNode = nullptr;
 }
 
 bool BTDecoratorNode::evaluate(AINode* aiNode) {

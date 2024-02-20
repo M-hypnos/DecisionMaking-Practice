@@ -9,10 +9,10 @@ class BTDecoratorNode : public BTNode
 {
 public:
 	BTDecoratorNode(BTNode* node) : _childNode(node){}
-	virtual void clear() override;
 	virtual bool evaluate(AINode* aiNode) override;
 	virtual void onInterrupt(AINode* aiNode);
-	virtual ~BTDecoratorNode() {};
+	virtual ~BTDecoratorNode();
+	BTDecoratorNode() = delete;
 protected:
 	BTNode* _childNode;
 private:

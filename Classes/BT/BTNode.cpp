@@ -16,6 +16,7 @@ void BTNode::clear() {
 		delete _precondition;
 		_precondition = nullptr;
 	}
+	_parentNode = nullptr;
 }
 
 bool BTNode::evaluate(AINode* aiNode) {

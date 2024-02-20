@@ -12,7 +12,6 @@ public:
 
 	
 	void addChild(BTNode* node) override;
-	virtual void clear() override;
 
 	virtual ~BTControlNode();
 protected:

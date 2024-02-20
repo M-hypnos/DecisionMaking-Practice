@@ -10,6 +10,7 @@ BTTree::BTTree(BTNode* root)
 BTTree::~BTTree(){
 	if (_root != nullptr) {
 		delete _root;
+		_root = nullptr;
 	}
 }
 

@@ -8,14 +8,6 @@ BTParallelNode::BTParallelNode(int successTarNum)
 };
 
 BTParallelNode::~BTParallelNode(){
-	
-}
-
-void BTParallelNode::clear() {
-	for (auto node : _childNodes) {
-		delete node;
-	}
-	_childNodes.clear();
 	_waitNodes.clear();
 }
 

@@ -5,10 +5,6 @@ BTControlNode::BTControlNode()
 };
 
 BTControlNode::~BTControlNode(){
-	
-}
-
-void BTControlNode::clear() {
 	for (auto node : _childNodes) {
 		delete node;
 	}
