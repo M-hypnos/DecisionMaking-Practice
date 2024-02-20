@@ -6,7 +6,7 @@ BTTestTree::BTTestTree(BTNode* root)
 };
 
 BTTestTree::~BTTestTree(){
-	if (_root != nullptr) delete _root;
+
 }
 
 void BTTestTree::setTree() {
@@ -41,15 +41,15 @@ void BTTestTree::setTree() {
 	seqAct->addChild(repeatAct2);
 	seqAct->addChild(repeatAct3);
 	_root = seqAct;*/
-	//auto act1 = new BTDelayActA();
-	//auto cdAct = new BTCooldownNode(act1,5);
-	//auto act2 = new BTDelayActB();
-	//auto repeatAct = new BTRepeatNode(act2, 5);
-	////auto sel = new BTPrioritySelectNode();
+	auto act1 = new BTDelayActA();
+	auto cdAct = new BTCooldownNode(act1,5);
+	auto act2 = new BTDelayActB();
+	auto repeatAct = new BTRepeatNode(act2, 5);
+	auto sel = new BTPrioritySelectNode();
 	//auto sel = new BTSelectNode();
-	//sel->addChild(cdAct);
-	//sel->addChild(repeatAct);
-	//_root = sel;
+	sel->addChild(cdAct);
+	sel->addChild(repeatAct);
+	_root = sel;
 	/*auto act1 = new BTDelayActA();
 	auto repeatAct = new BTRepeatNode(act1, 2);
 	auto timeLimitAct = new BTTimeLimitNode(repeatAct, 5.0);
@@ -59,12 +59,12 @@ void BTTestTree::setTree() {
 	sel->addChild(cdAct);
 	sel->addChild(act2);
 	_root = sel;*/
-	auto act1 = new BTDelayActA();
+	/*auto act1 = new BTDelayActA();
 	auto act2 = new BTDelayActB();
 	auto act3 = new BTDelayActC();
 	auto pal = new BTParallelNode(2);
 	pal->addChild(act1);
 	pal->addChild(act2);
 	pal->addChild(act3);
-	_root = pal;
+	_root = pal;*/
 }
