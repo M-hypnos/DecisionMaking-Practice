@@ -1,5 +1,9 @@
 #include "EvadingState.h"
 
+EvadingState::EvadingState(int stateId)
+: BaseState(stateId)
+{}
+
 void EvadingState::onEnterAction(AINode* aiNode) {
 	//CCLOG("EvadingState::onEnterAction  ");
 }

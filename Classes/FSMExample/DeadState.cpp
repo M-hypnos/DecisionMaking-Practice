@@ -1,5 +1,9 @@
 #include "DeadState.h"
 
+DeadState::DeadState(int stateId)
+: BaseState(stateId)
+{}
+
 void DeadState::onEnterAction(AINode* aiNode) {
 	//CCLOG("DeadState::onEnterAction  ");
 	static_cast<AIAttackNode*>(aiNode)->setVelocity(Vec2::ZERO);

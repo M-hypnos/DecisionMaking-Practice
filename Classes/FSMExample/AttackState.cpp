@@ -1,5 +1,9 @@
 #include "AttackState.h"
 
+AttackState::AttackState(int stateId)
+: BaseState(stateId)
+{}
+
 void AttackState::onEnterAction(AINode* aiNode) {
 	//CCLOG("AttackState::onEnterAction  ");
 	static_cast<AIAttackNode*>(aiNode)->setVelocity(Vec2::ZERO);

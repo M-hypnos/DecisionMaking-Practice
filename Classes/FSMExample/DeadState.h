@@ -7,7 +7,7 @@ class DeadState :
     public BaseState
 {
 public:
-	DeadState(int stateId) : BaseState(stateId) {}
+	DeadState(int stateId);
 private:
 	virtual void onEnterAction(AINode* aiNode);
 	virtual void onExitAction(AINode* aiNode);

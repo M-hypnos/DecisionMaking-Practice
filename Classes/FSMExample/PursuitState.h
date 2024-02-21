@@ -7,7 +7,7 @@ class PursuitState :
     public BaseState
 {
 public:
-	PursuitState(int stateId) : BaseState(stateId) {}
+	PursuitState(int stateId);
 private:
 	virtual void onEnterAction(AINode* aiNode);
 	virtual void onExitAction(AINode* aiNode);

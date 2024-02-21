@@ -1,5 +1,9 @@
 #include "WanderState.h"
 
+WanderState::WanderState(int stateId)
+: BaseState(stateId)
+{}
+
 void WanderState::onEnterAction(AINode* aiNode) {
 	//CCLOG("WanderState::onEnterAction  ");
 }

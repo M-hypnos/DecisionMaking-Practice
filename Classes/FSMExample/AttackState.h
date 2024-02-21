@@ -7,7 +7,7 @@ class AttackState :
     public BaseState
 {
 public:
-	AttackState(int stateId) : BaseState(stateId) {}
+	AttackState(int stateId);
 private:
 	virtual void onEnterAction(AINode* aiNode);
 	virtual void onExitAction(AINode* aiNode);

@@ -7,7 +7,7 @@ class WanderState :
     public BaseState
 {
 public:
-	WanderState(int stateId) : BaseState(stateId) {}
+	WanderState(int stateId);
 private:
 	virtual void onEnterAction(AINode* aiNode);
 	virtual void onExitAction(AINode* aiNode);

@@ -7,7 +7,7 @@ class IdleState :
     public BaseState
 {
 public:
-	IdleState(int stateId) : BaseState(stateId) {}
+	IdleState(int stateId);
 private:
 	virtual void onEnterAction(AINode* aiNode);
 	virtual void onExitAction(AINode* aiNode);

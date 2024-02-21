@@ -1,5 +1,9 @@
 #include "IdleState.h"
 
+IdleState::IdleState(int stateId)
+: BaseState(stateId)
+{}
+
 void IdleState::onEnterAction(AINode* aiNode) {
 	//CCLOG("IdleState::onEnterAction  ");
 	auto scale1 = ScaleTo::create(0.2, 1.2);
