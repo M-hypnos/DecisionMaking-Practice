@@ -7,7 +7,7 @@
 class Transition
 {
 public:
-	Transition(int toStateId):_toStateId(toStateId), _transitionType(TransitionType::AND),_trueNum(1), _weight(0){}
+	Transition(int toStateId);
 	~Transition();
 	int getToStateId() { return _toStateId; }
 	void addConditions(function<bool(AINode*, float timer)> condition);

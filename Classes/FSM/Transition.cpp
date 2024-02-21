@@ -1,5 +1,12 @@
 #include "Transition.h"
 
+Transition::Transition(int toStateId)
+: _toStateId(toStateId)
+, _transitionType(TransitionType::AND)
+, _trueNum(1)
+, _weight(0)
+{}
+
 Transition::~Transition() {
 	_conditions.clear();
 }
