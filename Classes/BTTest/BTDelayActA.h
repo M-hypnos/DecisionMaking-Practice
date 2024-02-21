@@ -9,7 +9,6 @@ using namespace std;
 class BTDelayActA : public BTActionNode
 {
 public:
-	BTDelayActA() :BTActionNode() {}
 
 protected:
 
