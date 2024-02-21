@@ -9,7 +9,6 @@ using namespace std;
 class BTEvadingNode : public BTActionNode
 {
 public:
-	BTEvadingNode() :BTActionNode() {}
 
 protected:
 

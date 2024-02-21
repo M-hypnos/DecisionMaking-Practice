@@ -9,7 +9,6 @@ using namespace std;
 class BTIdleNode : public BTActionNode
 {
 public:
-	BTIdleNode() :BTActionNode() {}
 
 protected:
 
