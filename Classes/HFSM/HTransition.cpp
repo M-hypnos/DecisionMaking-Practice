@@ -1,5 +1,13 @@
 #include "HTransition.h"
 
+HTransition::HTransition(int fromStateId, int toStateId)
+: _fromStateId(fromStateId)
+, _toStateId(toStateId)
+, _transitionType(HTransitionType::HAND)
+, _trueNum(1)
+, _weight(0)
+{}
+
 HTransition::~HTransition() {
 	_conditions.clear();
 }

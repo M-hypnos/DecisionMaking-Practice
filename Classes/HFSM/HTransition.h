@@ -7,7 +7,7 @@
 class HTransition
 {
 public:
-	HTransition(int fromStateId, int toStateId): _fromStateId(fromStateId), _toStateId(toStateId), _transitionType(HTransitionType::HAND),_trueNum(1), _weight(0) {}
+	HTransition(int fromStateId, int toStateId);
 	~HTransition();
 	int getFromStateId() { return _fromStateId; }
 	int getToStateId() { return _toStateId; }
