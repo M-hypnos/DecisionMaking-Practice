@@ -1,5 +1,9 @@
 #include "PursuitHState.h"
 
+PursuitHState::PursuitHState(int stateId)
+: HState(stateId)
+{}
+
 void PursuitHState::onEnterAction(AINode* aiNode) {
 	//CCLOG("PursuitHState::onEnterAction  ");
 }

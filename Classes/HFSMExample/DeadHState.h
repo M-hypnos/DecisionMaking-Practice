@@ -7,7 +7,7 @@ class DeadHState :
     public HState
 {
 public:
-	DeadHState(int stateId) : HState(stateId) {}
+	DeadHState(int stateId);
 private:
 	virtual void onEnterAction(AINode* aiNode);
 	virtual void onExitAction(AINode* aiNode);

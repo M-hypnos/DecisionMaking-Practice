@@ -7,7 +7,7 @@ class AttackHState :
     public HState
 {
 public:
-	AttackHState(int stateId) : HState(stateId) {}
+	AttackHState(int stateId);
 private:
 	virtual void onEnterAction(AINode* aiNode);
 	virtual void onExitAction(AINode* aiNode);

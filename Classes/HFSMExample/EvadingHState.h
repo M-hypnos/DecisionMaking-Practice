@@ -7,7 +7,7 @@ class EvadingHState :
     public HState
 {
 public:
-	EvadingHState(int stateId) : HState(stateId) {}
+	EvadingHState(int stateId);
 private:
 	virtual void onEnterAction(AINode* aiNode);
 	virtual void onExitAction(AINode* aiNode);
