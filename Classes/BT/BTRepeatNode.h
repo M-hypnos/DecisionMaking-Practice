@@ -8,9 +8,8 @@ using namespace std;
 class BTRepeatNode : public BTDecoratorNode
 {
 public:
-	BTRepeatNode(BTNode* node, int count = 1) : BTDecoratorNode(node), _repeatCount(count), _repeatIdx(0) {}
+	BTRepeatNode(BTNode* node, int count = 1);
 
-	virtual ~BTRepeatNode() {};
 protected:
 	
 private:

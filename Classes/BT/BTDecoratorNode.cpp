@@ -1,5 +1,8 @@
 #include "BTDecoratorNode.h"
 
+BTDecoratorNode::BTDecoratorNode(BTNode* node)
+: _childNode(node) {}
+
 BTDecoratorNode::~BTDecoratorNode() {
 	delete _childNode;
 	_childNode = nullptr;

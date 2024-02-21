@@ -1,5 +1,11 @@
 #include "BTTimeLimitNode.h"
 
+BTTimeLimitNode::BTTimeLimitNode(BTNode* node, float limitTime)
+: BTDecoratorNode(node)
+, _limitTime(limitTime)
+, _curTime(0)
+{}
+
 void BTTimeLimitNode::onExitAction(AINode* aiNode, BTResult result) {
 	_curTime = 0;
 }

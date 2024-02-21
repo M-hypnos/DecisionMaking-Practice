@@ -1,5 +1,10 @@
 #include "BTPrecondition.h"
 
+BTPrecondition::BTPrecondition()
+: _conditionType(BTPreconditionType::BTAND)
+, _trueNum(1) 
+{}
+
 BTPrecondition::~BTPrecondition() {
 	_conditions.clear();
 }

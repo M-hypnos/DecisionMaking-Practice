@@ -8,9 +8,7 @@ using namespace std;
 class BTTimeLimitNode : public BTDecoratorNode
 {
 public:
-	BTTimeLimitNode(BTNode* node, float limitTime = 1) : BTDecoratorNode(node), _limitTime(limitTime), _curTime(0) {}
-
-	virtual ~BTTimeLimitNode() {};
+	BTTimeLimitNode(BTNode* node, float limitTime = 1);
 protected:
 	
 private:

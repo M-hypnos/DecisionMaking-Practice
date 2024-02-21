@@ -8,7 +8,7 @@ using namespace std;
 class BTDecoratorNode : public BTNode
 {
 public:
-	BTDecoratorNode(BTNode* node) : _childNode(node){}
+	BTDecoratorNode(BTNode* node);
 	virtual bool evaluate(AINode* aiNode) override;
 	virtual void onInterrupt(AINode* aiNode);
 	virtual ~BTDecoratorNode();

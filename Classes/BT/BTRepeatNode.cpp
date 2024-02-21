@@ -1,5 +1,11 @@
 #include "BTRepeatNode.h"
 
+BTRepeatNode::BTRepeatNode(BTNode* node, int count)
+: BTDecoratorNode(node)
+, _repeatCount(count)
+, _repeatIdx(0)
+{}
+
 void BTRepeatNode::onExitAction(AINode* aiNode, BTResult result) {
 	_repeatIdx = 0;
 }

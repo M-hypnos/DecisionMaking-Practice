@@ -8,7 +8,7 @@ using namespace std;
 class BTRetryNode : public BTDecoratorNode
 {
 public:
-	BTRetryNode(BTNode* node, int count = 1) : BTDecoratorNode(node), _retryCount(count), _retryIdx(0) {}
+	BTRetryNode(BTNode* node, int count = 1);
 
 	virtual ~BTRetryNode() {};
 protected:

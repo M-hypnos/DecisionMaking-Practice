@@ -8,9 +8,8 @@ using namespace std;
 class BTCooldownNode : public BTDecoratorNode
 {
 public:
-	BTCooldownNode(BTNode* node, float cooldownTime = 1) : BTDecoratorNode(node), _cooldownTime(cooldownTime), _lastActTime(0) {}
+	BTCooldownNode(BTNode* node, float cooldownTime = 1);
 	virtual bool evaluate(AINode* aiNode) override;
-	virtual ~BTCooldownNode() {};
 protected:
 	
 private:

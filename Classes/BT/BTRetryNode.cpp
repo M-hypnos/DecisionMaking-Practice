@@ -1,5 +1,11 @@
 #include "BTRetryNode.h"
 
+BTRetryNode::BTRetryNode(BTNode* node, int count)
+: BTDecoratorNode(node)
+, _retryCount(count)
+, _retryIdx(0)
+{}
+
 void BTRetryNode::onExitAction(AINode* aiNode, BTResult result) {
 	_retryIdx = 0;
 }

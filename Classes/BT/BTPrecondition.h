@@ -7,7 +7,7 @@
 class BTPrecondition
 {
 public:
-	BTPrecondition(): _conditionType (BTPreconditionType::BTAND), _trueNum(1) {}
+	BTPrecondition();
 	~BTPrecondition();
 	void setType(int type) { _conditionType = type; }
 	void addConditions(function<bool(AINode*)> condition);

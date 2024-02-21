@@ -1,5 +1,12 @@
 #include "BTCooldownNode.h"
 
+BTCooldownNode::BTCooldownNode(BTNode* node, float cooldownTime)
+: BTDecoratorNode(node)
+, _cooldownTime(cooldownTime)
+, _lastActTime(0) 
+{
+}
+
 bool BTCooldownNode::evaluate(AINode* aiNode) {
 	auto cur = std::chrono::system_clock::now();
 	auto curTimeStamp = std::chrono::time_point_cast<std::chrono::milliseconds>(cur).time_since_epoch().count();
