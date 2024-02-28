@@ -9,6 +9,7 @@
 USING_NS_CC;
 using namespace std;
 using namespace RVO;
+
 class AIScene : public Scene
 {
 public:
@@ -28,6 +29,7 @@ public:
     void createHFSMNode();
     void createBTTreeNode();
     void createAILogNode();
+    void createHTNNode();
 
     RVOSimulator* getRVOSim() { return m_sim; }
 

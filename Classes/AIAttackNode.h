@@ -51,6 +51,7 @@ CC_CONSTRUCTOR_ACCESS:
 	void stopAttack();
 
 	void hurt();
+	virtual void hurtEx() { hurt(); }
 	void recoverHP(float dt);
 
 	void checkWall(float dt);
@@ -69,6 +70,8 @@ CC_CONSTRUCTOR_ACCESS:
 	void setDead();
 
 	void addDeadTime(float dt);
+
+	virtual void checkFindEnemy() {}
 
 	float getDeadTime() { return _deadTime; }
 protected:

@@ -206,7 +206,7 @@ void AIAttackNode::attack() {
     auto move2 = MoveTo::create(0.05, Vec2::ZERO);
     auto callFunc = CallFunc::create([this] {
         _attackNode->clear();
-        if (_nearestEnemy != nullptr) _nearestEnemy->hurt();
+        if (_nearestEnemy != nullptr) _nearestEnemy->hurtEx();
         });
     auto delayTime = DelayTime::create(0.3);
     auto callFunc1 = CallFunc::create([this] {
@@ -268,7 +268,7 @@ BTResult AIAttackNode::attackEx() {
     auto move2 = MoveTo::create(0.05, Vec2::ZERO);
     auto callFunc = CallFunc::create([this] {
         _attackNode->clear();
-        if (_nearestEnemy != nullptr) _nearestEnemy->hurt();
+        if (_nearestEnemy != nullptr) _nearestEnemy->hurtEx();
         });
     auto delayTime = DelayTime::create(0.3);
     auto callFunc1 = CallFunc::create([this] {
@@ -284,8 +284,9 @@ bool AIAttackNode::isStopORCA() {
     return isDead();
 }
 
-void AIAttackNode::setNearestEnemy(AINode* nearestEnemy) { 
-    _nearestEnemy = dynamic_cast<AIAttackNode*>(nearestEnemy); 
+void AIAttackNode::setNearestEnemy(AINode* nearestEnemy) {
+    _nearestEnemy = dynamic_cast<AIAttackNode*>(nearestEnemy);
+    checkFindEnemy();
 }
 
 void AIAttackNode::addDeadTime(float dt) {

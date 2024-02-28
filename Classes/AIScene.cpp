@@ -138,8 +138,9 @@ bool AIScene::onTouchBegan(Touch* touch, Event* event)
     createHFSMNode();
     createBTTreeNode();
     createBTTreeNode();
-
-    //_aiLogNode->startTree();
+    createHTNNode();
+    createHTNNode();
+    createHTNNode();
 
     return true;
 }
@@ -241,4 +242,20 @@ void AIScene::createAILogNode() {
     _aiLogNode = AILogNode::create();
     this->addChild(_aiLogNode);
     _aiLogNode->setPosition(Vec2(700, 320));
+}
+
+void AIScene::createHTNNode() {
+    float x = RandomHelper::random_real<float>(600, 800);
+    float y = RandomHelper::random_real<float>(0, 200);
+    Vec2 v(x, y);
+    auto node = _aiNodeManager->getHTNNode();
+    node->setPosition(v);
+    node->setId(_aiNodeIdx);
+    this->addChild(node);
+
+    int idx = m_sim->addAgent(Vector2(v.x, v.y));
+    m_sim->setAgentAINode(idx, node);
+    m_sim->setAgentType(idx, int(AINodeType::HTNNode));
+
+    _aiNodes.emplace(_aiNodeIdx++, node);
 }

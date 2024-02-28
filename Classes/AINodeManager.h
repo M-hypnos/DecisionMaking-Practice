@@ -5,6 +5,7 @@
 #include "FSMExample/FSMNode.h"
 #include "HFSMExample/HFSMNode.h"
 #include "BTExample/BTTreeNode.h"
+#include "HTNExample/HTNNode.h"
 
 USING_NS_CC;
 using namespace std;
@@ -12,7 +13,8 @@ using namespace std;
 enum class AINodeType {
 	FSMNode,
 	HFSMNode,
-	BTTreeNode
+	BTTreeNode,
+	HTNNode
 };
 
 class AINodeManager
@@ -21,6 +23,7 @@ public:
 	AIAttackNode* getFSMNode();
 	AIAttackNode* getHFSMNode();
 	AIAttackNode* getBTTreeNode();
+	AIAttackNode* getHTNNode();
 
 protected:
 	

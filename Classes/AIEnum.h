@@ -58,4 +58,25 @@ enum BTResult
 	INTERRUPT
 };
 
+enum class HTNTaskType {
+	PRIMITIVE,
+	COMPOUND
+};
+
+enum HTNPreconditionType
+{
+	HTNAND,
+	HTNOR,
+	HTNNUM
+};
+
+enum class HTNResult
+{
+	HNONE,
+	HSUCCESS,
+	HFAIL,
+	HRUNNING,
+	HINTERRUPT
+};
+
 #endif
