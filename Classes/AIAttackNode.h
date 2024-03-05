@@ -71,8 +71,6 @@ CC_CONSTRUCTOR_ACCESS:
 
 	void addDeadTime(float dt);
 
-	virtual void checkFindEnemy() {}
-
 	float getDeadTime() { return _deadTime; }
 protected:
 	DrawNode* _direct;

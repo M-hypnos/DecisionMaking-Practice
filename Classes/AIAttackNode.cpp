@@ -286,7 +286,6 @@ bool AIAttackNode::isStopORCA() {
 
 void AIAttackNode::setNearestEnemy(AINode* nearestEnemy) {
     _nearestEnemy = dynamic_cast<AIAttackNode*>(nearestEnemy);
-    checkFindEnemy();
 }
 
 void AIAttackNode::addDeadTime(float dt) {
