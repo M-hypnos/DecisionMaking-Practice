@@ -2,6 +2,7 @@
 #define _HTN_NODE_EXAMPLE_H__
 #include "AIAttackNode.h"
 #include "HTN/HTNPrimitiveTask.h"
+#include "HTN/HTNSensors.h"
 #include "HTNNode.h"
 using namespace std;
 
@@ -83,6 +84,26 @@ namespace HTNNodeExampleSpace {
 		virtual void onEnterAction() override;
 		virtual HTNResult onUpdateAction(float dt) override;
 		virtual void onExitAction(HTNResult result) override;
+		HTNNode* _aiNode;
+	};
+
+	class HPSensor :public HTNISensor {
+	public:
+		HPSensor() = delete;
+		HPSensor(HTNNode* aiNode);
+		virtual void initSensor(unique_ptr<HTNWorldState>& worldState);
+		virtual void updateSensor(unique_ptr<HTNWorldState>& worldState);
+	private:
+		HTNNode* _aiNode;
+	};
+
+	class EnemySensor :public HTNISensor {
+	public:
+		EnemySensor() = delete;
+		EnemySensor(HTNNode* aiNode);
+		virtual void initSensor(unique_ptr<HTNWorldState>& worldState);
+		virtual void updateSensor(unique_ptr<HTNWorldState>& worldState);
+	private:
 		HTNNode* _aiNode;
 	};
 }

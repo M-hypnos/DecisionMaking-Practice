@@ -165,7 +165,6 @@ HTNResult IdleNode::onUpdateAction(float dt) {
 	//CCLOG("HTN IdleNode::onEnterAction  ");
 	_aiNode->setVelocity(Vec2::ZERO);
 	_aiNode->recoverHP(dt);
-	if (_aiNode->getHP() >= 20) _aiNode->updateWorldState("inDanger", false);
 	if (!_aiNode->notFoundEnemy()) {
 		return HTNResult::HFAIL;
 	}
@@ -176,4 +175,50 @@ void IdleNode::onExitAction(HTNResult result) {
 	_aiNode->stopAllActions();
 	_aiNode->setScale(1);
 	_aiNode->setRestInterval(10);
+}
+
+HPSensor::HPSensor(HTNNode* aiNode)
+: _aiNode(aiNode)
+{}
+
+void HPSensor::initSensor(unique_ptr<HTNWorldState>& worldState) {
+	int hp = _aiNode->getHP();
+	worldState->addState("alive", Any(hp > 0 ? true : false));
+	worldState->addState("inDanger", Any(hp < 20 ? true : false));
+	worldState->addState("fullHp", Any(hp == 100 ? true : false));
+}
+
+void HPSensor::updateSensor(unique_ptr<HTNWorldState>& worldState) {
+	int hp = _aiNode->getHP();
+	if (hp > 0) {
+		if (any_cast<bool>(worldState->getState("fullHp")) != (hp == 100)) {
+			worldState->updateState("fullHp", hp == 100);
+		}
+		if (any_cast<bool>(worldState->getState("inDanger")) != (hp < 20)) {
+			worldState->updateState("inDanger", hp < 20);
+		}
+	}
+	else {
+		if (any_cast<bool>(worldState->getState("alive")) == true) {
+			worldState->updateState("alive", false);
+		}
+	}
+}
+
+EnemySensor::EnemySensor(HTNNode* aiNode)
+: _aiNode(aiNode)
+{}
+
+void EnemySensor::initSensor(unique_ptr<HTNWorldState>& worldState) {
+	worldState->addState("findEnemy", !_aiNode->notFoundEnemy());
+	worldState->addState("inAttackRange", _aiNode->inAttackRange());
+}
+
+void EnemySensor::updateSensor(unique_ptr<HTNWorldState>& worldState) {
+	if (any_cast<bool>(worldState->getState("findEnemy")) == _aiNode->notFoundEnemy()) {
+		worldState->updateState("findEnemy", !_aiNode->notFoundEnemy());
+	}
+	if (any_cast<bool>(worldState->getState("inAttackRange")) != _aiNode->inAttackRange()) {
+		worldState->updateState("inAttackRange", _aiNode->inAttackRange());
+	}
 }

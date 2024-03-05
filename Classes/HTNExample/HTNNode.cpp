@@ -20,12 +20,10 @@ bool HTNNode::init()
     _planRunner = make_shared<HTNPlanRunner>(make_shared<HTNPlanner>());
     _domain = make_shared<HTNDomain>();
     _worldState = make_unique<HTNWorldState>();
+    _sensors = make_unique<HTNSensors>();
 
-    _worldState->addState("alive", Any(true));
-    _worldState->addState("inDanger", Any(false));
-    _worldState->addState("findEnemy", Any(false));
-    _worldState->addState("inAttackRange", Any(false));
-    _worldState->addState("fullHp", Any(true));
+    _sensors->addSensor(make_shared<HTNNodeExampleSpace::HPSensor>(this), _worldState);
+    _sensors->addSensor(make_shared<HTNNodeExampleSpace::EnemySensor>(this), _worldState);
 
     auto deadCheck = [](const unique_ptr<HTNWorldState>& worldState) -> bool {
         return !any_cast<bool>(worldState->getState("alive"));
@@ -137,21 +135,15 @@ bool HTNNode::init()
 
 void HTNNode::update(float dt) {
     AIAttackNode::update(dt);
+    _sensors->update(_worldState);
     _planRunner->onUpdate(dt, _worldState, _domain->getTask("killEnemy"));
-}
-
-void HTNNode::updateWorldState(string key, Any data) {
-    if (any_cast<bool>(_worldState->getState(key)) == any_cast<bool>(data)) return;
-    _worldState->updateState(key, data);
 }
 
 HTNResult HTNNode::htnAttack() {
     if (_nearestEnemy == nullptr) {
-        updateWorldState("findEnemy", false);
         return HTNResult::HFAIL;
     }
     if (!inAttackRange()) {
-        updateWorldState("inAttackRange", false);
         return HTNResult::HFAIL;
     }
     if (_isInAttacking) return HTNResult::HRUNNING;
@@ -178,7 +170,6 @@ HTNResult HTNNode::htnAttack() {
 
 HTNResult HTNNode::htnPursuit(float dt) {
     if (_nearestEnemy == nullptr) {
-        updateWorldState("findEnemy", false);
         return HTNResult::HFAIL;
     }
     if (inAttackRange()) {
@@ -222,16 +213,4 @@ HTNResult HTNNode::htnEvading(float dt) {
 
     checkWall(dt);
     return HTNResult::HRUNNING;
-}
-
-void HTNNode::hurtEx() {
-    if(_hp == 100) updateWorldState("fullHp", false);
-    _hp -= 10;
-    _label->setString(to_string(_hp));
-   
-    if (_hp <= 0) {
-        updateWorldState("alive", false);
-    }else if (_hp < 20) {
-        updateWorldState("inDanger", true);
-    }
 }
