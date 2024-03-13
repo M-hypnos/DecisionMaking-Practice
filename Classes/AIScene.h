@@ -6,6 +6,7 @@
 #include "ORCA/RVOSimulator.h"
 #include "ORCA/Vector2.h"
 #include "AILogNode.h"
+#include "GOAPTest/GOAPTestNode.h"
 USING_NS_CC;
 using namespace std;
 using namespace RVO;
@@ -29,7 +30,9 @@ public:
     void createHFSMNode();
     void createBTTreeNode();
     void createAILogNode();
+    void createGOAPTestNode();
     void createHTNNode();
+    void createGOAPNode();
 
     RVOSimulator* getRVOSim() { return m_sim; }
 
@@ -42,6 +45,7 @@ protected:
 
     unordered_map<int, AIAttackNode*> _aiNodes;
     AILogNode* _aiLogNode;
+    GOAPTestNode* _goapTestNode;
 
     RVO::RVOSimulator* m_sim;
 

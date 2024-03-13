@@ -79,4 +79,13 @@ enum class HTNResult
 	HINTERRUPT
 };
 
+enum class GOAPResult
+{
+	GNONE,
+	GSUCCESS,
+	GFAIL,
+	GRUNNING,
+	GINTERRUPT
+};
+
 #endif

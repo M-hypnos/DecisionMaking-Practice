@@ -124,6 +124,7 @@ bool AIScene::init()
 
     m_sim->processObstacles(); 
     createAILogNode();
+    createGOAPTestNode();
 
     return true;
 }
@@ -140,7 +141,26 @@ bool AIScene::onTouchBegan(Touch* touch, Event* event)
     createBTTreeNode();
     createHTNNode();
     createHTNNode();
-    createHTNNode();
+    createGOAPNode();
+    createGOAPNode();
+
+    //_goapTestNode->createGoap();
+    //_aiLogNode->startTree();
+
+    /*auto node = GOAPNode::create();
+    auto body = DrawNode::create();
+    node->_renderNode->addChild(body, -1);
+    body->drawDot(Vec2(0, 0), node->getRidius(), Color4F(1, 0, 1, 0.5));
+    float x = RandomHelper::random_real<float>(1200, 1400);
+    float y = RandomHelper::random_real<float>(400, 600);
+    Vec2 v(x, y);
+    node->setPosition(v);
+    node->setId(_aiNodeIdx);
+    this->addChild(node);
+    int idx = m_sim->addAgent(Vector2(v.x, v.y));
+    m_sim->setAgentAINode(idx, node);
+    m_sim->setAgentType(idx, 0);
+    _aiNodes.emplace(_aiNodeIdx++, node);*/
 
     return true;
 }
@@ -190,8 +210,8 @@ void AIScene::update(float dt) {
 }
 
 void AIScene::createFSMNode() {
-    float x = RandomHelper::random_real<float>(0, 200);
-    float y = RandomHelper::random_real<float>(0, 200);
+    float x = RandomHelper::random_real<float>(300, 400);
+    float y = RandomHelper::random_real<float>(0, 100);
     Vec2 v(x, y);
 
     auto node = _aiNodeManager->getFSMNode();
@@ -207,8 +227,8 @@ void AIScene::createFSMNode() {
 }
 
 void AIScene::createHFSMNode() {
-    float x = RandomHelper::random_real<float>(600, 800);
-    float y = RandomHelper::random_real<float>(440, 640);
+    float x = RandomHelper::random_real<float>(600, 700);
+    float y = RandomHelper::random_real<float>(540, 640);
     Vec2 v(x, y);
     auto node = _aiNodeManager->getHFSMNode();
     node->setPosition(v);
@@ -223,8 +243,8 @@ void AIScene::createHFSMNode() {
 }
 
 void AIScene::createBTTreeNode() {
-    float x = RandomHelper::random_real<float>(1200, 1400);
-    float y = RandomHelper::random_real<float>(0, 200);
+    float x = RandomHelper::random_real<float>(1000, 1100);
+    float y = RandomHelper::random_real<float>(0, 100);
     Vec2 v(x, y);
     auto node = _aiNodeManager->getBTTreeNode();
     node->setPosition(v);
@@ -244,9 +264,15 @@ void AIScene::createAILogNode() {
     _aiLogNode->setPosition(Vec2(700, 320));
 }
 
+void AIScene::createGOAPTestNode() {
+    _goapTestNode = GOAPTestNode::create();
+    this->addChild(_goapTestNode);
+    _aiLogNode->setPosition(Vec2(700, 320));
+}
+
 void AIScene::createHTNNode() {
-    float x = RandomHelper::random_real<float>(600, 800);
-    float y = RandomHelper::random_real<float>(0, 200);
+    float x = RandomHelper::random_real<float>(0, 100);
+    float y = RandomHelper::random_real<float>(440, 540);
     Vec2 v(x, y);
     auto node = _aiNodeManager->getHTNNode();
     node->setPosition(v);
@@ -256,6 +282,22 @@ void AIScene::createHTNNode() {
     int idx = m_sim->addAgent(Vector2(v.x, v.y));
     m_sim->setAgentAINode(idx, node);
     m_sim->setAgentType(idx, int(AINodeType::HTNNode));
+
+    _aiNodes.emplace(_aiNodeIdx++, node);
+}
+
+void AIScene::createGOAPNode() {
+    float x = RandomHelper::random_real<float>(1300, 1400);
+    float y = RandomHelper::random_real<float>(440, 540);
+    Vec2 v(x, y);
+    auto node = _aiNodeManager->getGOAPNode();
+    node->setPosition(v);
+    node->setId(_aiNodeIdx);
+    this->addChild(node);
+
+    int idx = m_sim->addAgent(Vector2(v.x, v.y));
+    m_sim->setAgentAINode(idx, node);
+    m_sim->setAgentType(idx, int(AINodeType::GOAPNode));
 
     _aiNodes.emplace(_aiNodeIdx++, node);
 }
